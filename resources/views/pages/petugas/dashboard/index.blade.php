@@ -4,7 +4,17 @@
 
 @section('content')
 <div class="container">
-    <h4 class="mb-4 fw-semibold">Dashboard</h4>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">Dashboard Petugas</h4>
+
+    <div class="mx-auto" style="width:280px;">
+<input type="text"
+       id="search"
+       class="form-control"
+       placeholder="Search..."
+       style="border-radius:10px;">
+</div>
+</div>
 
     <!-- CARD -->
     <div class="row mb-4">

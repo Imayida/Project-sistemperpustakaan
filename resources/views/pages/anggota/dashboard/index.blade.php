@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold">Dashboard</h4>
+    <h4 class="fw-bold">Dashboard Anggota</h4>
 
     <div class="mx-auto" style="width:280px;">
 <input type="text"
