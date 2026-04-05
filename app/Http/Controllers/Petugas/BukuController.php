@@ -14,8 +14,10 @@ class BukuController extends Controller
         $query = Buku::query();
 
         if ($request->keyword) {
-            $query->where('judul', 'like', '%' . $request->keyword . '%')
+            $query->where(function($q) use ($request) {
+                $q->where('judul', 'like', '%' . $request->keyword . '%')
                   ->orWhere('pengarang', 'like', '%' . $request->keyword . '%');
+            });
         }
 
         $buku = $query->get();
@@ -40,17 +42,29 @@ class BukuController extends Controller
             'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // ✅ CEK DUPLIKAT
+        $cek = Buku::where('judul', $request->judul)
+                   ->where('pengarang', $request->pengarang)
+                   ->first();
+
+        if ($cek) {
+            return back()
+                ->withInput()
+                ->with('error', 'Buku sudah ada di database!');
+        }
+
+        // upload gambar
         $gambar = $request->file('gambar')->store('buku', 'public');
 
         Buku::create([
-    'judul' => $request->judul,
-    'pengarang' => $request->pengarang,
-    'penerbit' => $request->penerbit,
-    'tahun_terbit' => $request->tahun,
-    'stok' => $request->stok,
-    'deskripsi' => $request->deskripsi,
-    'gambar' => $gambar,
-]);
+            'judul' => $request->judul,
+            'pengarang' => $request->pengarang,
+            'penerbit' => $request->penerbit,
+            'tahun_terbit' => $request->tahun,
+            'stok' => $request->stok,
+            'deskripsi' => $request->deskripsi,
+            'gambar' => $gambar,
+        ]);
 
         return redirect()->route('petugas.buku.index')
             ->with('success', 'Buku berhasil ditambahkan');
@@ -79,9 +93,22 @@ class BukuController extends Controller
             'tahun' => 'required|numeric',
             'stok' => 'required|numeric',
             'deskripsi' => 'nullable',
-            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // ✅ CEK DUPLIKAT (kecuali data ini sendiri)
+        $cek = Buku::where('judul', $request->judul)
+                   ->where('pengarang', $request->pengarang)
+                   ->where('id', '!=', $id)
+                   ->first();
+
+        if ($cek) {
+            return back()
+                ->withInput()
+                ->with('error', 'Buku dengan judul & pengarang ini sudah ada!');
+        }
+
+        // update gambar jika ada
         if ($request->hasFile('gambar')) {
             if ($buku->gambar) {
                 Storage::disk('public')->delete($buku->gambar);
@@ -92,14 +119,14 @@ class BukuController extends Controller
         }
 
         $buku->update([
-    'judul' => $request->judul,
-    'pengarang' => $request->pengarang,
-    'penerbit' => $request->penerbit,
-    'tahun_terbit' => $request->tahun,
-    'stok' => $request->stok,
-    'deskripsi' => $request->deskripsi,
-    'gambar' => $gambar,
-]);
+            'judul' => $request->judul,
+            'pengarang' => $request->pengarang,
+            'penerbit' => $request->penerbit,
+            'tahun_terbit' => $request->tahun,
+            'stok' => $request->stok,
+            'deskripsi' => $request->deskripsi,
+            'gambar' => $gambar,
+        ]);
 
         return redirect()->route('petugas.buku.index')
             ->with('success', 'Buku berhasil diupdate');

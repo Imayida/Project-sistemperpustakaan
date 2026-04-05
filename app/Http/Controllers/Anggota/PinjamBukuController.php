@@ -15,7 +15,7 @@ class PinjamBukuController extends Controller
         return view('pages.anggota.buku.pinjambuku', compact('buku'));
     }
 
-    
+
 public function store(Request $request)
 {
     $request->validate([
@@ -35,11 +35,12 @@ public function store(Request $request)
 
     // 🔹 simpan data peminjaman
     \App\Models\Anggota\PinjamBuku::create([
-        'nama' => $request->nama,
-        'judul' => $request->judul,
-        'tanggal_pinjam' => $request->tanggal_pinjam,
-        'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
-    ]);
+    'nama' => $request->nama,
+    'judul' => $request->judul,
+    'tanggal_pinjam' => $request->tanggal_pinjam,
+    'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
+    'status' => 'pending', // ✅ INI YANG KURANG
+]);
 
     // 🔹 kurangi stok
     $buku->stok -= 1;

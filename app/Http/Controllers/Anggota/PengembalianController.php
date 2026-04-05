@@ -40,14 +40,14 @@ public function store(Request $request)
     ]);
 
     \App\Models\Anggota\Pengembalian::create([
-        'nama' => $request->nama,
-        'judul' => $request->judul,
-        'tanggal_pinjam' => $request->tanggal_pinjam,
-        'tanggal_kembali' => $request->tanggal_kembali,
-        'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
-        'denda' => $request->denda,
-        'status' => 'Selesai'
-    ]);
+    'nama' => $request->nama,
+    'judul' => $request->judul,
+    'tanggal_pinjam' => $request->tanggal_pinjam,
+    'tanggal_kembali' => $request->tanggal_kembali,
+    'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
+    'denda' => $request->denda,
+    'status' => 'pending' // 🔥 GANTI INI
+]);
 
     return redirect()->route('pengembalian.index')
         ->with('success', 'Buku berhasil dikembalikan');

@@ -47,11 +47,6 @@
         <i class="bi bi-arrow-repeat"></i> Data Pengembalian
     </a>
 
-    <!-- DENDA -->
-    <a href="/petugas/denda"
-       class="menu-item {{ request()->is('petugas/denda') ? 'active' : '' }}">
-        <i class="bi bi-cash"></i> Menerima Denda
-    </a>
 
     <!-- LOGOUT -->
 <form action="{{ route('logout') }}" method="POST" id="logout-form">

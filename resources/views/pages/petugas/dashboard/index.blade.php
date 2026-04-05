@@ -8,17 +8,17 @@
     <h4 class="fw-bold">Dashboard Petugas</h4>
 
     <div class="mx-auto" style="width:280px;">
-<input type="text"
-       id="search"
-       class="form-control"
-       placeholder="Search..."
-       style="border-radius:10px;">
-</div>
+        <input type="text"
+        id="search"
+        class="form-control"
+        placeholder="Search..."
+        style="border-radius:10px;">
+    </div>
 </div>
 
     <!-- CARD -->
     <div class="row mb-4">
-        <!-- Total Anggota -->
+        <!-- TOTAL ANGGOTA -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm border-0 rounded-4 p-3">
                 <div class="d-flex justify-content-between align-items-center">
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <!-- Total Denda -->
+        <!-- TOTAL DENDA -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm border-0 rounded-4 p-3">
                 <div class="d-flex justify-content-between align-items-center">
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <!-- Total Buku -->
+        <!-- TOTAL BUKU -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm border-0 rounded-4 p-3">
                 <div class="d-flex justify-content-between align-items-center">
@@ -58,56 +58,82 @@
         </div>
     </div>
 
-    <!-- 🔥 TABLE RAPI -->
-    <div class="card shadow-sm border-0 rounded-4 p-3">
-        <div class="table-responsive">
-            <table class="table align-middle">
 
-                <thead class="text-muted small" style="font-weight:500;">
-                    <tr>
-                        <th>NAMA</th>
-                        <th>JUDUL BUKU</th>
-                        <th>TANGGAL PINJAM</th>
-                        <th>TANGGAL KEMBALI</th>
-                        <th>TANGGAL JATUH TEMPO</th>
-                        <th>DENDA</th>
-                        <th>STATUS</th>
-                        <th class="text-center">AKSI</th>
-                    </tr>
-                </thead>
+    <!-- TABLE DATA PEMINJAMAN -->
+<div class="card shadow-sm border-0 rounded-4 p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-                <tbody style="font-size:14px;">
-                    <tr>
-                        <td>Maya</td>
-                        <td>Hujan</td>
-                        <td>15-02-2026</td>
-                        <td>15-02-2026</td>
-                        <td>15-02-2026</td>
-                        <td>Rp 8.000</td>
-
-                        <td>
-                            <span class="badge bg-success px-3 py-1">
-                                Selesai
-                            </span>
-                        </td>
-
-                        <!-- 🔥 AKSI RAPIH -->
-                        <td>
-                            <div class="d-flex justify-content-center gap-1">
-                                <button class="btn btn-info btn-sm">
-                                    Detail
-                                </button>
-
-                                <button class="btn btn-danger btn-sm">
-                                    Delete
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-
-            </table>
-        </div>
     </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+
+            <thead class="text-muted" style="font-size:13px;">
+                <tr>
+                    <th>NAMA</th>
+                    <th>JUDUL BUKU</th>
+                    <th>TANGGAL PINJAM</th>
+                    <th>TANGGAL JATUH TEMPO</th>
+                    <th>STATUS</th>
+                    <th class="text-center">AKSI</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody" style="font-size:14px;">
+
+                @foreach($peminjaman as $item)
+                <tr>
+                    <td>{{ $item->nama }}</td>
+                    <td>{{ $item->judul }}</td>
+                    <td>{{ $item->tanggal_pinjam }}</td>
+                    <td>{{ $item->tanggal_jatuh_tempo }}</td>
+
+                    <!-- STATUS -->
+                    <td>
+                        @php
+                            $today = \Carbon\Carbon::now();
+                            $jatuhTempo = \Carbon\Carbon::parse($item->tanggal_jatuh_tempo);
+                        @endphp
+
+                        @if($item->status == 'pending')
+                            <span class="badge bg-warning px-3 py-1">Pending</span>
+
+                        @elseif($item->status == 'ditolak')
+                            <span class="badge bg-danger px-3 py-1">Ditolak</span>
+
+                        @elseif($item->status == 'dikembalikan')
+                            <span class="badge bg-success px-3 py-1">Dikembalikan</span>
+
+                        @elseif($item->status == 'dipinjam')
+
+                            @if($jatuhTempo < $today)
+                                <span class="badge bg-danger px-3 py-1">Terlambat</span>
+                            @else
+                                <span class="badge bg-primary px-3 py-1">Dipinjam</span>
+                            @endif
+
+                        @else
+                             <span class="badge bg-secondary px-3 py-1">-</span>
+                        @endif
+                    </td>
+
+                    <!-- AKSI DELETE -->
+                    <td class="text-center">
+                        <form action="{{ route('petugas.peminjaman.destroy', $item->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
 </div>
 @endsection

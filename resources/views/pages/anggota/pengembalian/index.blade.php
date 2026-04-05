@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-semibold mb-0">Data Pengembalian</h4>
+     <h4 class="fw-bold">Data Pengembalian</h4>
 
     <a href="{{ route('pengembalian.create') }}" class="btn btn-primary btn-sm">
         Kembalikan Buku +
@@ -15,7 +15,7 @@
     <div class="table-responsive">
         <table class="table align-middle">
 
-            <thead class="text-muted small" style="font-weight:500;">
+            <thead class="text-muted" style="font-size:13px;">
                 <tr>
                     <th>NAMA</th>
                     <th>JUDUL BUKU</th>

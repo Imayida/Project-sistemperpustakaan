@@ -2,38 +2,37 @@
 
 namespace App\Models\Petugas;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Anggota\Buku;
+use App\Models\Petugas\Buku;
 
-class PinjamBuku extends Model
+class Pengembalian extends Model
 {
-    use HasFactory;
-
-    protected $table = 'pinjam_buku';
+    protected $table = 'pengembalian';
 
     protected $fillable = [
         'nama',
         'judul',
         'tanggal_pinjam',
+        'tanggal_kembali',
         'tanggal_jatuh_tempo',
+        'denda',
         'status',
+        'petugas_id'
     ];
 
-    /**
-     * Relasi ke User
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke Buku
-     */
     public function buku()
     {
         return $this->belongsTo(Buku::class);
+    }
+
+    public function petugas()
+    {
+        return $this->belongsTo(User::class, 'petugas_id');
     }
 }

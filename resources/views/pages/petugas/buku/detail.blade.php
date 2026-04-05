@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h4 class="mb-4">Detail Buku</h4>
+<h4 class="fw-bold">Detail Buku</h4>
 
 <div class="card shadow-sm p-4" style="border-radius:10px; background-color:#f8f9fa;">
 
@@ -30,7 +30,7 @@
                 {{ $buku->deskripsi }}
             </p>
 
-            <!-- Tombol (Cuma Kembali, posisi kiri seperti gambar) -->
+            <!-- Tombol -->
             <div class="mt-3">
                 <a href="{{ route('petugas.buku.index') }}" class="btn btn-secondary">
                     Kembali

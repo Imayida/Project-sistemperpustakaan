@@ -1,127 +1,125 @@
 @extends('layouts.petugas.app')
 
+@section('title', 'Data Peminjaman')
+
 @section('content')
+<div class="container-fluid">
 
-<style>
-    .card-custom {
-        border-radius: 12px;
-        background: #fff;
-    }
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold">Data Peminjaman</h4>
 
-    .search-box {
-        width: 260px;
-    }
-
-    table th {
-        font-size: 12px;
-        color: #999;
-        text-transform: uppercase;
-    }
-
-    table td {
-        font-size: 14px;
-    }
-
-    .badge-status {
-        padding: 5px 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        color: #fff;
-    }
-
-    .dipinjam {
-        background: #c6ff00;
-        color: #000;
-    }
-
-    .terlambat {
-        background: #ff0000;
-    }
-
-    .tersedia {
-        background: #198754;
-    }
-</style>
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="fw-bold">Data Peminjaman</h5>
-
-    <input type="text" id="search" class="form-control search-box" placeholder="Search...">
-</div>
-
-<div class="card shadow-sm border-0 card-custom p-4">
-
-    <div class="table-responsive">
-        <table class="table text-center align-middle">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Judul Buku</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Tanggal Jatuh Tempo</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @forelse($pinjam as $p)
-                <tr class="data-item"
-                    data-search="{{ strtolower(($p->user->name ?? '') . ' ' . ($p->buku->judul ?? '')) }}">
-
-                    <td>{{ $p->user->name ?? '-' }}</td>
-                    <td>{{ $p->buku->judul ?? '-' }}</td>
-                    <td>{{ $p->tanggal_pinjam }}</td>
-                    <td>{{ $p->tanggal_jatuh_tempo }}</td>
-
-                    <td>
-                        @if($p->status == 'dipinjam')
-                            <span class="badge-status dipinjam">Dipinjam</span>
-                        @elseif($p->status == 'terlambat')
-                            <span class="badge-status terlambat">Terlambat</span>
-                        @else
-                            <span class="badge-status tersedia">Tersedia</span>
-                        @endif
-                    </td>
-
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5">Tidak ada data</td>
-                </tr>
-                @endforelse
-            </tbody>
-
-        </table>
+        <div class="mx-auto" style="width:280px;">
+            <input type="text" class="form-control" placeholder="Search..." style="border-radius:10px;">
+        </div>
     </div>
 
+    <!-- Card -->
+    <div class="card shadow-sm border-0 rounded-4 p-3">
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="text-muted" style="font-size:13px;">
+                    <tr>
+                        <th>NAMA</th>
+                        <th>JUDUL BUKU</th>
+                        <th>TANGGAL PINJAM</th>
+                        <th>TANGGAL JATUH TEMPO</th>
+                        <th>STATUS</th>
+                        <th>AKSI</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @forelse ($peminjaman as $item)
+                        <tr>
+
+                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->judul}}</td>
+
+                            <td>{{ $item->tanggal_pinjam }}</td>
+                            <td>{{ $item->tanggal_jatuh_tempo }}</td>
+
+                            {{-- STATUS --}}
+                            <td>
+                                @php
+                                    $status = ucfirst($item->status);
+                                    $badge = 'secondary';
+
+                                    if ($item->status == 'pending') {
+                                     $badge = 'warning';
+                                    }
+                                    elseif ($item->status == 'dipinjam') {
+                                        $badge = 'primary';
+                                    } elseif ($item->status == 'ditolak') {
+                                        $badge = 'danger';
+                                    } elseif ($item->status == 'dikembalikan') {
+                                        $badge = 'success';
+                                    }
+
+                                    // terlambat
+                                    if ($item->tanggal_jatuh_tempo < now() && $item->status == 'dipinjam') {
+                                        $status = 'Terlambat';
+                                        $badge = 'danger';
+                                    }
+                                @endphp
+
+                                <span class="badge bg-{{ $badge }}">
+                                    {{ $status }}
+                                </span>
+                            </td>
+
+                            {{-- AKSI --}}
+         <td>
+
+    {{-- PENDING --}}
+    @if($item->status == 'pending')
+
+        <form action="{{ route('petugas.peminjaman.setujui', $item->id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button class="btn btn-sm btn-success"
+                onclick="return confirm('Konfirmasi peminjaman ini?')">
+                Konfirmasi
+            </button>
+        </form>
+
+        <form action="{{ route('petugas.peminjaman.tolak', $item->id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button class="btn btn-sm btn-danger"
+                onclick="return confirm('Tolak peminjaman ini?')">
+                Tolak
+            </button>
+        </form>
+
+    {{-- SUDAH DISETUJUI --}}
+    @elseif($item->status == 'dipinjam')
+        <span class="badge bg-primary">Sudah Diproses</span>
+
+    {{--  DITOLAK --}}
+    @elseif($item->status == 'ditolak')
+        <span class="badge bg-danger">Ditolak</span>
+
+    {{-- SELESAI --}}
+    @elseif($item->status == 'dikembalikan')
+        <span class="badge bg-success">Selesai</span>
+
+    @endif
+
+</td>
+                        </tr>
+
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                Data tidak tersedia
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
 </div>
-
-@endsection
-
-
-@section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-
-    const search = document.getElementById('search');
-    const items = document.querySelectorAll('.data-item');
-
-    if (!search) return;
-
-    search.addEventListener('input', function() {
-        let keyword = this.value.toLowerCase();
-
-        items.forEach(function(item) {
-            let text = item.dataset.search || '';
-
-            if (text.includes(keyword)) {
-                item.style.display = '';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    });
-
-});
-</script>
 @endsection

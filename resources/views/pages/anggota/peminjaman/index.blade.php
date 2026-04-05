@@ -6,21 +6,20 @@
     <h4 class="fw-bold">Data Peminjaman</h4>
 
     <div class="mx-auto" style="width:280px;">
-<input type="text"
-       id="search"
-       class="form-control"
-       placeholder="Search..."
-       style="border-radius:10px;">
+        <input type="text"
+               id="search"
+               class="form-control"
+               placeholder="Search..."
+               style="border-radius:10px;">
+    </div>
 </div>
-</div>
-
 
 <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-4">
 
         <table class="table align-middle">
-            <thead>
-                <tr class="text-muted small">
+            <thead class="text-muted" style="font-size:13px;">
+                <tr>
                     <th>NAMA</th>
                     <th>JUDUL BUKU</th>
                     <th>TANGGAL PINJAM</th>
@@ -38,26 +37,40 @@
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
 
                     <td>
-    @php
-        $today = date('Y-m-d');
-    @endphp
+                        @php
+                            $today = \Carbon\Carbon::now();
+                            $jatuhTempo = \Carbon\Carbon::parse($item->tanggal_jatuh_tempo);
+                        @endphp
 
-    @if($item->tanggal_jatuh_tempo < $today)
-        <span class="badge bg-danger">Terlambat</span>
+                        {{-- 🔥 PRIORITAS STATUS DATABASE --}}
+                        @if($item->status == 'pending')
+                            <span class="badge bg-warning text-dark">Pending</span>
 
-    @elseif($item->tanggal_pinjam <= $today)
-        <span class="badge bg-warning text-dark">Dipinjam</span>
+                        @elseif($item->status == 'ditolak')
+                            <span class="badge bg-danger">Ditolak</span>
 
-    @else
-        <span class="badge bg-success">Tersedia</span>
-    @endif
-</td>
+                        @elseif($item->status == 'dikembalikan')
+                            <span class="badge bg-success">Dikembalikan</span>
+
+                        @elseif($item->status == 'dipinjam')
+
+                            {{-- 🔥 CEK TERLAMBAT --}}
+                            @if($jatuhTempo < $today)
+                                <span class="badge bg-danger">Terlambat</span>
+                            @else
+                                <span class="badge bg-primary">Dipinjam</span>
+                            @endif
+
+                        @else
+                            <span class="badge bg-secondary">-</span>
+                        @endif
+                    </td>
+
                 </tr>
                 @endforeach
             </tbody>
 
         </table>
-
 
     </div>
 </div>
@@ -73,8 +86,9 @@ document.getElementById('search').addEventListener('keyup', function() {
 
     rows.forEach(function(row) {
         let nama = row.children[0].textContent.toLowerCase();
+        let judul = row.children[1].textContent.toLowerCase();
 
-        if (nama.includes(keyword)) {
+        if (nama.includes(keyword) || judul.includes(keyword)) {
             row.style.display = '';
         } else {
             row.style.display = 'none';

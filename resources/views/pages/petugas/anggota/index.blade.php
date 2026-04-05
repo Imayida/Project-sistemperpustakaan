@@ -6,13 +6,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold">Data Anggota</h4>
 
-    <div class="mx-auto" style="width:280px;">
-<input type="text"
-       id="search"
-       class="form-control"
-       placeholder="Search..."
-       style="border-radius:10px;">
-</div>
+    
 </div>
 
     <!-- CARD -->
@@ -79,4 +73,4 @@
 
 </div>
 
-@endsection 
+@endsection

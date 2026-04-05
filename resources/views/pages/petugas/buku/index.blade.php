@@ -35,12 +35,11 @@
         justify-content: center;
     }
 
-    /* GAMBAR (FIX SESUAI ANGGOTA) */
     .buku-img {
         max-height: 140px;
         max-width: 100%;
-        object-fit: contain; /* biar tidak kepotong */
-        border-radius: 0; /* hilangkan lengkung */
+        object-fit: contain;
+        border-radius: 0; /
     }
 
     /* BUTTON */

@@ -6,7 +6,7 @@
 
     <!-- HEADER -->
     <div class="mb-4">
-        <h4 class="fw-semibold">Form Pinjam Buku</h4>
+        <h4 class="fw-bold">Form Pinjam Buku</h4>
     </div>
 
     <!-- FORM CARD -->
@@ -25,7 +25,7 @@
                            placeholder="Masukan Nama Lengkap">
                 </div>
 
-                <!-- Judul Buku (AUTO DARI DETAIL) -->
+                <!-- Judul Buku (DARI DETAIL) -->
                 <div class="mb-3">
                     <label class="form-label small text-muted">Judul Buku</label>
                     <input type="text"
@@ -44,7 +44,7 @@
                            class="form-control">
                 </div>
 
-                <!-- Tanggal Jatuh Tempo (AUTO) -->
+                <!-- Tanggal Jatuh Tempo  -->
                 <div class="mb-4">
                     <label class="form-label small text-muted">Tanggal Jatuh Tempo</label>
                     <input type="date"
@@ -61,8 +61,8 @@
                     </button>
 
                     <a href="{{ route('buku.detail', $buku->id) }}" class="btn btn-secondary btn-sm">
-    Kembali
-</a>
+                        Kembali
+                    </a>
                 </div>
 
             </form>
@@ -72,7 +72,7 @@
 
 </div>
 
-<!-- SCRIPT AUTO JATUH TEMPO -->
+<!-- SCRIPT JATUH TEMPO -->
 <script>
 document.getElementById('tanggal_pinjam').addEventListener('change', function() {
     let tgl = new Date(this.value);

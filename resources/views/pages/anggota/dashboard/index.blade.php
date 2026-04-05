@@ -6,12 +6,12 @@
     <h4 class="fw-bold">Dashboard Anggota</h4>
 
     <div class="mx-auto" style="width:280px;">
-<input type="text"
-       id="search"
-       class="form-control"
-       placeholder="Search..."
-       style="border-radius:10px;">
-</div>
+        <input type="text"
+        id="search"
+        class="form-control"
+        placeholder="Search..."
+        style="border-radius:10px;">
+    </div>
 </div>
 
 <div class="card border-0 shadow-sm rounded-4">
@@ -20,7 +20,7 @@
         <div class="table-responsive">
             <table class="table align-middle">
 
-                <thead class="text-muted small">
+                <thead class="text-muted" style="font-size:13px;">
                     <tr>
                         <th>NAMA</th>
                         <th>JUDUL BUKU</th>
@@ -35,19 +35,36 @@
                     <tr>
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->judul }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
 
                         <td>
-                            {{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d-m-Y') }}
-                        </td>
+                            @php
+                                 $today = \Carbon\Carbon::now();
+                                 $jatuhTempo = \Carbon\Carbon::parse($item->tanggal_jatuh_tempo);
+                            @endphp
 
-                        <td>
-                            {{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d-m-Y') }}
-                        </td>
+                            @if($item->status == 'pending')
+                                <span class="badge bg-warning text-dark px-3 py-1">Pending</span>
 
-                        <td>
-                            <span class="badge bg-warning text-dark px-3 py-1">
-                                Dipinjam
-                            </span>
+                            @elseif($item->status == 'ditolak')
+                                <span class="badge bg-danger px-3 py-1">Ditolak</span>
+
+                            @elseif($item->status == 'dikembalikan')
+                                <span class="badge bg-success px-3 py-1">Dikembalikan</span>
+
+                            @elseif($item->status == 'dipinjam')
+
+                                {{-- cek terlambat --}}
+                                @if($jatuhTempo < $today)
+                                    <span class="badge bg-danger px-3 py-1">Terlambat</span>
+                                @else
+                                    <span class="badge bg-primary px-3 py-1">Dipinjam</span>
+                                 @endif
+
+                            @else
+                                <span class="badge bg-secondary px-3 py-1">-</span>
+                             @endif
                         </td>
                     </tr>
                     @empty
@@ -61,12 +78,6 @@
 
             </table>
 
-            <div class="d-flex justify-content-end mt-3">
-    <a href="{{ route('peminjaman.index') }}"
-       class="text-decoration-none small">
-        Lihat Semua
-    </a>
-</div>
         </div>
 
     </div>

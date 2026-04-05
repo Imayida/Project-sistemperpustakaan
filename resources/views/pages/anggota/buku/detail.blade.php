@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h4 class="mb-4">Detail Buku</h4>
+<h4 class="fw-bold">Detail Buku</h4>
 
 <div class="card shadow-sm p-4">
 
@@ -32,8 +32,8 @@
 
             <div class="mt-3">
                 <a href="{{ route('pinjambuku.create', $buku->id) }}" class="btn btn-primary">
-    Pinjam Buku
-</a>
+                    Pinjam Buku
+                </a>
                 <a href="{{ route('buku.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Anggota\Pinjambuku;
+use App\Models\Petugas\PinjamBuku; // ✅ GANTI KE SINI
 use App\Models\Anggota\Buku;
 
 class DashboardController extends Controller
@@ -17,16 +17,12 @@ class DashboardController extends Controller
         // 📚 total buku
         $totalBuku = Buku::count();
 
-        // 💰 total denda (sementara / bisa kamu ubah nanti)
+        // 💰 total denda (sementara)
         $totalDenda = 0;
 
-        // 📋 data peminjaman terbaru + relasi
-        $peminjaman = Pinjambuku::with(['user', 'buku'])
-                            ->latest()
-                            ->take(5)
-                            ->get();
+        // 🔥 AMBIL DATA PEMINJAMAN PETUGAS (BUKAN ANGGOTA)
+        $peminjaman = PinjamBuku::latest()->take(5)->get();
 
-        // kirim ke view
         return view('pages.petugas.dashboard.index', compact(
             'totalAnggota',
             'totalBuku',

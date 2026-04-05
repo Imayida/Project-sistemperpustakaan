@@ -6,8 +6,10 @@ use App\Http\Controllers\Anggota\PinjamBukuController;
 use App\Http\Controllers\Anggota\PengembalianController;
 use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Petugas\BukuController as PetugasBukuController;
+use App\Http\Controllers\Petugas\PinjamBukuController as PetugasPinjamBukuController;
 use App\Http\Controllers\Petugas\AnggotaController;
-
+use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
+use App\Http\Controllers\Kepala\DashboardController as KepalaDashboardController;
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +28,7 @@ Route::post('/register', [AuthController::class, 'prosesRegister']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// ANGGOTA
 // DASBOARD ANGGOTA
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -51,8 +54,7 @@ Route::post('/anggota/pengembalian', [PengembalianController::class, 'store'])->
 // =======================
 // DASHBOARD PETUGAS
 // =======================
-Route::get('/petugas/dashboard', [PetugasDashboardController::class, 'index'])
-    ->name('petugas.dashboard');
+Route::get('/petugas/dashboard', [PetugasDashboardController::class, 'index'])->name('petugas.dashboard');
 
 
 // =======================
@@ -88,6 +90,47 @@ Route::delete('/petugas/buku/{id}', [PetugasBukuController::class, 'destroy'])
     ->name('petugas.buku.destroy');
 
 
+// =======================
+// DATA PEMINJAMAN PETUGAS
+// =======================
+
+// INDEX
+Route::get('/petugas/peminjaman', [PetugasPinjamBukuController::class, 'index'])
+    ->name('petugas.peminjaman.index');
+
+// CREATE (WAJIB DI ATAS {id})
+Route::get('/petugas/peminjaman/create', [PetugasPinjamBukuController::class, 'create'])
+    ->name('petugas.peminjaman.create');
+
+// STORE (DIBENERIN - TANPA /store)
+Route::post('/petugas/peminjaman', [PetugasPinjamBukuController::class, 'store'])
+    ->name('petugas.peminjaman.store');
+
+// SHOW
+Route::get('/petugas/peminjaman/{id}', [PetugasPinjamBukuController::class, 'show'])
+    ->name('petugas.peminjaman.show');
+
+// EDIT
+Route::get('/petugas/peminjaman/{id}/edit', [PetugasPinjamBukuController::class, 'edit'])
+    ->name('petugas.peminjaman.edit');
+
+// UPDATE
+Route::put('/petugas/peminjaman/{id}', [PetugasPinjamBukuController::class, 'update'])
+    ->name('petugas.peminjaman.update');
+
+// DELETE (NAMA DIRAPIKAN)
+Route::delete('/petugas/peminjaman/{id}', [PetugasPinjamBukuController::class, 'destroy'])
+    ->name('petugas.peminjaman.destroy');
+
+// KEMBALIKAN (FITUR TAMBAHAN)
+Route::post('/petugas/peminjaman/{id}/kembalikan', [PetugasPinjamBukuController::class, 'kembalikan'])
+    ->name('petugas.peminjaman.kembalikan');
+
+ Route::post('/petugas/peminjaman/{id}/setujui', [PetugasPinjamBukuController::class, 'setujui'])
+    ->name('petugas.peminjaman.setujui');
+
+Route::post('/petugas/peminjaman/{id}/tolak', [PetugasPinjamBukuController::class, 'tolak'])
+    ->name('petugas.peminjaman.tolak');
 
 // DATA ANGGOTA
 // tampil data anggota
@@ -96,3 +139,31 @@ Route::get('/petugas/anggota', [AnggotaController::class, 'index'])->name('petug
 Route::delete('/petugas/anggota/{id}', [AnggotaController::class, 'delete'])->name('petugas.anggota.delete');
 
 
+// DATA PENGEMBALIAN
+Route::get('/petugas/pengembalian', [PetugasPengembalianController::class, 'index'])
+    ->name('petugas.pengembalian.index');
+
+Route::post('/petugas/pengembalian/{id}/setujui', [PetugasPengembalianController::class, 'setujui'])
+    ->name('petugas.pengembalian.setujui');
+
+Route::post('/petugas/pengembalian/{id}/tolak', [PetugasPengembalianController::class, 'tolak'])
+    ->name('petugas.pengembalian.tolak');
+
+
+// =======================
+// KEPALA
+// =======================
+
+// Dashboard (sudah ada)
+Route::get('/kepala/dashboard', [KepalaDashboardController::class, 'index'])
+    ->name('kepala.dashboard');
+
+// Data Buku
+Route::get('/kepala/buku', function () {
+    return view('pages.kepala.buku.index');
+})->name('kepala.buku.index');
+
+// Laporan
+Route::get('/kepala/laporan', function () {
+    return view('pages.kepala.laporan.index');
+})->name('kepala.laporan');

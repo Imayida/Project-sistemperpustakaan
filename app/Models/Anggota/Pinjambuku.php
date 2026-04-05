@@ -14,7 +14,8 @@ class PinjamBuku extends Model
     'nama',
     'judul',
     'tanggal_pinjam',
-    'tanggal_jatuh_tempo'
+    'tanggal_jatuh_tempo',
+    'status', // ✅ WAJIB ADA
 ];
 
     public function user()
