@@ -1,5 +1,6 @@
 <div class="sidebar">
 
+    <!-- JUDUL -->
     <h5 class="fw-bold mb-4 text-center">Sistem Perpustakaan</h5>
 
     <!-- PROFILE -->
@@ -10,28 +11,26 @@
              height="70"
              style="object-fit: cover;">
         <br>
-
-        <!-- LANGSUNG KEPALA -->
         <span class="badge-role">Kepala Perpustakaan</span>
     </div>
 
     <!-- MENU -->
 
-    <!-- Dashboard -->
+    <!-- DASHBOARD -->
     <a href="{{ route('kepala.dashboard') }}"
-       class="menu-item {{ request()->is('kepala/dashboard') ? 'active' : '' }}">
+       class="menu-item {{ request()->routeIs('kepala.dashboard') ? 'active' : '' }}">
         <i class="bi bi-grid"></i> Dashboard
     </a>
 
-    <!-- Data Buku -->
+    <!-- DATA BUKU -->
     <a href="{{ route('kepala.buku.index') }}"
-       class="menu-item {{ request()->is('kepala/buku*') ? 'active' : '' }}">
+       class="menu-item {{ request()->routeIs('kepala.buku.*') ? 'active' : '' }}">
         <i class="bi bi-book"></i> Data Buku
     </a>
 
-    <!-- Laporan -->
+    <!-- LAPORAN -->
     <a href="{{ route('kepala.laporan') }}"
-       class="menu-item {{ request()->is('kepala/laporan') ? 'active' : '' }}">
+       class="menu-item {{ request()->routeIs('kepala.laporan') ? 'active' : '' }}">
         <i class="bi bi-file-text"></i> Laporan
     </a>
 
@@ -42,7 +41,7 @@
 
     <a href="#"
        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-       class="menu-item text-danger">
+       class="menu-item">
         <i class="bi bi-box-arrow-right"></i> Logout
     </a>
 

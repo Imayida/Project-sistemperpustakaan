@@ -4,7 +4,7 @@ namespace App\Models\Anggota;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Anggota\Buku; // ✅ FIX DI SINI
+use App\Models\Anggota\Buku; 
 
 class PinjamBuku extends Model
 {
@@ -15,7 +15,7 @@ class PinjamBuku extends Model
     'judul',
     'tanggal_pinjam',
     'tanggal_jatuh_tempo',
-    'status', // ✅ WAJIB ADA
+    'status',
 ];
 
     public function user()

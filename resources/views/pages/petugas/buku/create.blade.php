@@ -5,7 +5,7 @@
 @section('content')
 <div class="container-fluid">
 
-    <h4 class="fw-bold">Tambah Buku</h4>
+    <h4 class="fw-bold" style="color:#60a5fa;">Tambah Buku</h4>
 
     <div class="card shadow-sm border-0 rounded-4 p-4">
         <form action="{{ route('petugas.buku.store') }}" method="POST" enctype="multipart/form-data">

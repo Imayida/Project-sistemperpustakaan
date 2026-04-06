@@ -18,7 +18,7 @@ class PengembalianController extends Controller
     $data = \App\Models\Petugas\Pengembalian::findOrFail($id);
 
     $data->update([
-        'status' => 'selesai'
+        'status' => 'pending'
     ]);
 
     return back()->with('success', 'Pengembalian disetujui');
@@ -33,6 +33,23 @@ public function tolak($id)
     ]);
 
     return back()->with('success', 'Pengembalian ditolak');
+}
+public function selesai($id)
+{
+    $data = \App\Models\Petugas\Pengembalian::findOrFail($id);
+
+    $data->update([
+        'status' => 'pending'
+    ]);
+
+    return back()->with('success', 'Pengembalian selesai');
+}
+public function destroy($id)
+{
+    $data = \App\Models\Petugas\Pengembalian::findOrFail($id);
+    $data->delete();
+
+    return back()->with('success', 'Data berhasil dihapus');
 }
 }
 

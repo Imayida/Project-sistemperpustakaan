@@ -4,9 +4,9 @@
 
 <div class="container-fluid">
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold">Data Anggota</h4>
+  <h4 class="fw-bold" style="color:#60a5fa;">Data Anggota</h4>
 
-    
+
 </div>
 
     <!-- CARD -->

@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Models\Anggota;
+namespace App\Models\Kepala;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Buku extends Model
 {
-    // Nama tabel di database
-    protected $table = 'buku';
+    protected $table = 'buku'; // SAMA dengan petugas
 
-    // Kolom 
     protected $fillable = [
         'judul',
         'pengarang',
         'penerbit',
         'tahun_terbit',
         'stok',
-        'gambar',
-        'deskripsi'
+        'deskripsi',
+        'gambar'
     ];
 }

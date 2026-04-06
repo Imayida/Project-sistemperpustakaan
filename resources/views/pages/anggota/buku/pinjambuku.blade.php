@@ -6,7 +6,7 @@
 
     <!-- HEADER -->
     <div class="mb-4">
-        <h4 class="fw-bold">Form Pinjam Buku</h4>
+        <h4 class="fw-bold" style="color:#60a5fa;">Form Pinjam Buku</h4>
     </div>
 
     <!-- FORM CARD -->

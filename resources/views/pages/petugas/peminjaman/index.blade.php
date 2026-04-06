@@ -7,7 +7,7 @@
 
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold">Data Peminjaman</h4>
+        <h4 class="fw-bold" style="color:#60a5fa;">Data Peminjaman</h4>
 
         <div class="mx-auto" style="width:280px;">
             <input type="text" class="form-control" placeholder="Search..." style="border-radius:10px;">
@@ -78,8 +78,8 @@
         <form action="{{ route('petugas.peminjaman.setujui', $item->id) }}" method="POST" style="display:inline;">
             @csrf
             <button class="btn btn-sm btn-success"
-                onclick="return confirm('Konfirmasi peminjaman ini?')">
-                Konfirmasi
+                onclick="return confirm('Setujui peminjaman ini?')">
+                Setujui
             </button>
         </form>
 
@@ -93,11 +93,15 @@
 
     {{-- SUDAH DISETUJUI --}}
     @elseif($item->status == 'dipinjam')
-        <span class="badge bg-primary">Sudah Diproses</span>
+        <span style="color: #0d6efd; font-style: italic; font-weight: 500; font-size: 13px;">
+    Sudah Diproses
+</span>
 
     {{--  DITOLAK --}}
     @elseif($item->status == 'ditolak')
-        <span class="badge bg-danger">Ditolak</span>
+       <span style="color: #dc3545; font-style: italic; font-weight: 500; font-size: 12px;">
+    Ditolak
+</span>
 
     {{-- SELESAI --}}
     @elseif($item->status == 'dikembalikan')

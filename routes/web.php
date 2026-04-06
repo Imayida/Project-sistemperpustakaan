@@ -10,6 +10,7 @@ use App\Http\Controllers\Petugas\PinjamBukuController as PetugasPinjamBukuContro
 use App\Http\Controllers\Petugas\AnggotaController;
 use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
 use App\Http\Controllers\Kepala\DashboardController as KepalaDashboardController;
+use App\Http\Controllers\Kepala\BukuController as KepalaBukuController;
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -149,19 +150,24 @@ Route::post('/petugas/pengembalian/{id}/setujui', [PetugasPengembalianController
 Route::post('/petugas/pengembalian/{id}/tolak', [PetugasPengembalianController::class, 'tolak'])
     ->name('petugas.pengembalian.tolak');
 
+Route::post('/petugas/pengembalian/{id}/selesai', [PetugasPengembalianController::class, 'selesai'])
+    ->name('petugas.pengembalian.selesai');
+
+Route::delete('/petugas/pengembalian/{id}', [PetugasPengembalianController::class, 'destroy'])
+    ->name('petugas.pengembalian.delete');
 
 // =======================
 // KEPALA
 // =======================
 
-// Dashboard (sudah ada)
-Route::get('/kepala/dashboard', [KepalaDashboardController::class, 'index'])
-    ->name('kepala.dashboard');
+// Dashboard
+Route::get('/kepala/dashboard', [KepalaDashboardController::class, 'index'])->name('kepala.dashboard');
 
 // Data Buku
-Route::get('/kepala/buku', function () {
-    return view('pages.kepala.buku.index');
-})->name('kepala.buku.index');
+Route::get('/kepala/buku', [KepalaBukuController::class, 'index'])->name('kepala.buku.index');
+
+// Detail Buku
+Route::get('/kepala/buku/{id}', [KepalaBukuController::class, 'detail'])->name('kepala.buku.detail');
 
 // Laporan
 Route::get('/kepala/laporan', function () {

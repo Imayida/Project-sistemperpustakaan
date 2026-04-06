@@ -2,7 +2,7 @@
 
 @section('content')
 
- <h4 class="fw-bold">Form Pengembalian</h4>
+ <h4 class="fw-bold" style="color:#60a5fa;">Form Pengembalian</h4>
 
 <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body">

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold">Data Peminjaman</h4>
+    <h4 class="fw-bold" style="color:#60a5fa;">Data Peminjaman</h4>
 
     <div class="mx-auto" style="width:280px;">
         <input type="text"
@@ -42,9 +42,9 @@
                             $jatuhTempo = \Carbon\Carbon::parse($item->tanggal_jatuh_tempo);
                         @endphp
 
-                        {{-- 🔥 PRIORITAS STATUS DATABASE --}}
+                        {{-- STATUS  --}}
                         @if($item->status == 'pending')
-                            <span class="badge bg-warning text-dark">Pending</span>
+                            <span class="badge bg-warning text-white">Pending</span>
 
                         @elseif($item->status == 'ditolak')
                             <span class="badge bg-danger">Ditolak</span>
@@ -54,7 +54,7 @@
 
                         @elseif($item->status == 'dipinjam')
 
-                            {{-- 🔥 CEK TERLAMBAT --}}
+                            {{-- TERLAMBAT --}}
                             @if($jatuhTempo < $today)
                                 <span class="badge bg-danger">Terlambat</span>
                             @else

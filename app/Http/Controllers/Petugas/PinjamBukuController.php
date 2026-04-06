@@ -46,8 +46,8 @@ class PinjamBukuController extends Controller
         ]);
 
         PinjamBuku::create([
-            'nama' => $request->user_id,
-            'judul' => $request->buku_id,
+            'nama' => $request->nama,
+            'judul' => $request->judul,
             'tanggal_pinjam' => $request->tanggal_pinjam,
             'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
             'status' => 'pending', // 🔥 ubah jadi pending

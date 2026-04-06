@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h4 class="fw-bold">Detail Buku</h4>
+<h4 class="fw-bold" style="color:#60a5fa;">Detail Buku</h4>
 
 <div class="card shadow-sm p-4">
 

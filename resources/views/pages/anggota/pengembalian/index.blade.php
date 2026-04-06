@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-     <h4 class="fw-bold">Data Pengembalian</h4>
+     <h4 class="fw-bold" style="color:#60a5fa;">Data Pengembalian</h4>
 
     <a href="{{ route('pengembalian.create') }}" class="btn btn-primary btn-sm">
         Kembalikan Buku +
@@ -24,7 +24,7 @@
                     <th>TANGGAL JATUH TEMPO</th>
                     <th>DENDA</th>
                     <th>STATUS</th>
-                    <th class="text-center">AKSI</th>
+
                 </tr>
             </thead>
 
@@ -39,31 +39,33 @@
                     <td>Rp {{ number_format($item->denda, 0, ',', '.') }}</td>
 
                     <td>
-                        <span class="badge bg-success px-3 py-1">
-                            {{ $item->status }}
-                        </span>
+                        @php
+    $status = strtolower(trim($item->status));
+@endphp
+
+@if($status == 'pending')
+    <span class="badge bg-warning text-white px-3 py-1">
+        Pending
+    </span>
+
+@elseif($status == 'dikembalikan')
+    <span class="badge bg-success px-3 py-1">
+        Dikembalikan
+    </span>
+
+@elseif($status == 'ditolak')
+    <span class="badge bg-danger px-3 py-1">
+        Ditolak
+    </span>
+
+@else
+    <span class="badge bg-secondary px-3 py-1">
+        {{ $item->status }}
+    </span>
+@endif
                     </td>
 
-                    <!-- 🔥 AKSI DIRAPIHIN -->
-                    <td>
-                        <div class="d-flex justify-content-center gap-1">
 
-                            <a href="#" class="btn btn-info btn-sm">
-                                Detail
-                            </a>
-
-                            <form action="{{ route('pengembalian.delete', $item->id) }}"
-                                  method="POST">
-                                @csrf
-                                @method('DELETE')
-
-                                <button class="btn btn-danger btn-sm">
-                                    Delete
-                                </button>
-                            </form>
-
-                        </div>
-                    </td>
                 </tr>
 
                 @empty

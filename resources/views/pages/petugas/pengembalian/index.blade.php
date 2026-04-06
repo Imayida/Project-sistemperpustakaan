@@ -6,7 +6,7 @@
 
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold">Data Pengembalian</h4>
+       <h4 class="fw-bold" style="color:#60a5fa;">Data Pengembalian</h4>
 
         <div class="mx-auto" style="width:280px;">
             <input type="text"
@@ -57,9 +57,9 @@
                             @endphp
 
                             @if($status == 'pending')
-                                <span class="badge bg-warning text-dark px-3 py-1">Pending</span>
-                            @elseif($status == 'selesai')
-                                <span class="badge bg-success px-3 py-1">Selesai</span>
+                                <span class="badge bg-warning text-white px-3 py-1">Pending</span>
+                            @elseif($status == 'dikembalikan')
+                                <span class="badge bg-success px-3 py-1">Dikembalikan</span>
                             @elseif($status == 'ditolak')
                                 <span class="badge bg-danger px-3 py-1">Ditolak</span>
                             @else
@@ -68,33 +68,52 @@
                         </td>
 
                         <!-- AKSI -->
-                        <td>
-                            <div class="d-flex justify-content-center gap-1">
+                       <td>
+    <div class="d-flex justify-content-center gap-1">
 
-                                @if($status == 'pending')
+        {{-- SAAT PENDING --}}
+        @if($status == 'pending')
 
-                                <!-- SETUJUI -->
-                                <form action="{{ route('petugas.pengembalian.setujui', $item->id) }}" method="POST">
-                                    @csrf
-                                    <button class="btn btn-success btn-sm">
-                                        Setujui
-                                    </button>
-                                </form>
+            <form action="{{ route('petugas.pengembalian.setujui', $item->id) }}" method="POST">
+                @csrf
+                <button class="btn btn-success btn-sm">
+                    Setujui
+                </button>
+            </form>
 
-                                <!-- TOLAK -->
-                                <form action="{{ route('petugas.pengembalian.tolak', $item->id) }}" method="POST">
-                                    @csrf
-                                    <button class="btn btn-danger btn-sm">
-                                        Tolak
-                                    </button>
-                                </form>
+            <form action="{{ route('petugas.pengembalian.tolak', $item->id) }}" method="POST">
+                @csrf
+                <button class="btn btn-danger btn-sm">
+                    Tolak
+                </button>
+            </form>
 
-                                @else
-                                    <span class="text-muted">-</span>
-                                @endif
+        {{-- SAAT SUDAH DIKEMBALIKAN --}}
+        @elseif($status == 'dikembalikan')
 
-                            </div>
-                        </td>
+            {{-- SELESAI --}}
+            <form action="{{ route('petugas.pengembalian.selesai', $item->id) }}" method="POST">
+                @csrf
+                <button class="btn btn-primary btn-sm">
+                    Selesai
+                </button>
+            </form>
+
+            {{-- DELETE --}}
+            <form action="{{ route('petugas.pengembalian.delete', $item->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-secondary btn-sm">
+                    Hapus
+                </button>
+            </form>
+
+        @else
+            <span class="text-muted">-</span>
+        @endif
+
+    </div>
+</td>
 
                     </tr>
 

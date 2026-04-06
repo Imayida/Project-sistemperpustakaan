@@ -5,7 +5,7 @@
 @section('content')
 <div class="container-fluid">
 
-    <h4 class="fw-bold">Edit Buku</h4>
+   <h4 class="fw-bold" style="color:#60a5fa;">Edit Buku</h4>
 
     <div class="card shadow-sm border-0 rounded-4 p-4">
         <form action="{{ route('petugas.buku.update', $buku->id) }}" method="POST" enctype="multipart/form-data">
@@ -66,7 +66,7 @@
             <!-- Button -->
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('petugas.buku.index') }}" class="btn btn-light">Cancel</a>
+                <a href="{{ route('petugas.buku.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
 
         </form>

@@ -9,7 +9,7 @@ class Buku extends Model
     // nama tabel
     protected $table = 'buku';
 
-    // field yang boleh diisi
+    // Kolom 
     protected $fillable = [
     'judul',
     'pengarang',
