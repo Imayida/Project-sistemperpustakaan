@@ -26,95 +26,90 @@
                         <th>TANGGAL PINJAM</th>
                         <th>TANGGAL JATUH TEMPO</th>
                         <th>STATUS</th>
-                        <th>AKSI</th>
+                        <th class="text-center">AKSI</th>
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody style="font-size:14px;">
                     @forelse ($peminjaman as $item)
                         <tr>
 
                             <td>{{ $item->nama }}</td>
-                            <td>{{ $item->judul}}</td>
-
-                            <td>{{ $item->tanggal_pinjam }}</td>
-                            <td>{{ $item->tanggal_jatuh_tempo }}</td>
+                            <td>{{ $item->judul }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d-m-Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
 
                             {{-- STATUS --}}
                             <td>
                                 @php
-                                    $status = ucfirst($item->status);
+                                    $status = strtolower(trim($item->status));
                                     $badge = 'secondary';
 
-                                    if ($item->status == 'pending') {
-                                     $badge = 'warning';
-                                    }
-                                    elseif ($item->status == 'dipinjam') {
-                                        $badge = 'primary';
-                                    } elseif ($item->status == 'ditolak') {
-                                        $badge = 'danger';
-                                    } elseif ($item->status == 'dikembalikan') {
-                                        $badge = 'success';
-                                    }
+                                    if ($status == 'pending') $badge = 'warning';
+                                    elseif ($status == 'dipinjam') $badge = 'primary';
+                                    elseif ($status == 'ditolak') $badge = 'danger';
+                                    elseif ($status == 'dikembalikan') $badge = 'success';
 
                                     // terlambat
-                                    if ($item->tanggal_jatuh_tempo < now() && $item->status == 'dipinjam') {
+                                    if ($item->tanggal_jatuh_tempo < now() && $status == 'dipinjam') {
                                         $status = 'Terlambat';
                                         $badge = 'danger';
                                     }
+
+                                    $statusLabel = ucfirst($status);
                                 @endphp
 
-                                <span class="badge bg-{{ $badge }}">
-                                    {{ $status }}
+                                <span class="badge bg-{{ $badge }} px-3 py-1">
+                                    {{ $statusLabel }}
                                 </span>
                             </td>
 
                             {{-- AKSI --}}
-         <td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1 flex-wrap">
 
-    {{-- PENDING --}}
-    @if($item->status == 'pending')
+                                    {{-- PENDING --}}
+                                    @if($status == 'pending')
+                                        <form action="{{ route('petugas.peminjaman.setujui', $item->id) }}" method="POST">
+                                            @csrf
+                                            <button class="btn btn-success btn-sm"
+                                                onclick="return confirm('Setujui peminjaman ini?')">
+                                                Setujui
+                                            </button>
+                                        </form>
 
-        <form action="{{ route('petugas.peminjaman.setujui', $item->id) }}" method="POST" style="display:inline;">
-            @csrf
-            <button class="btn btn-sm btn-success"
-                onclick="return confirm('Setujui peminjaman ini?')">
-                Setujui
-            </button>
-        </form>
+                                        <form action="{{ route('petugas.peminjaman.tolak', $item->id) }}" method="POST">
+                                            @csrf
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Tolak peminjaman ini?')">
+                                                Tolak
+                                            </button>
+                                        </form>
 
-        <form action="{{ route('petugas.peminjaman.tolak', $item->id) }}" method="POST" style="display:inline;">
-            @csrf
-            <button class="btn btn-sm btn-danger"
-                onclick="return confirm('Tolak peminjaman ini?')">
-                Tolak
-            </button>
-        </form>
+                                    {{-- DIPINJAM --}}
+                                    @elseif($status == 'dipinjam')
+                                        <span style="color: #0d6efd; font-style: italic; font-weight: 500; font-size: 13px;">
+                                            Sudah Diproses
+                                        </span>
 
-    {{-- SUDAH DISETUJUI --}}
-    @elseif($item->status == 'dipinjam')
-        <span style="color: #0d6efd; font-style: italic; font-weight: 500; font-size: 13px;">
-    Sudah Diproses
-</span>
+                                    {{-- DITOLAK --}}
+                                    @elseif($status == 'ditolak')
+                                        <span style="color: #dc3545; font-style: italic; font-weight: 500; font-size: 13px;">
+                                            Ditolak
+                                        </span>
 
-    {{--  DITOLAK --}}
-    @elseif($item->status == 'ditolak')
-       <span style="color: #dc3545; font-style: italic; font-weight: 500; font-size: 12px;">
-    Ditolak
-</span>
+                                    {{-- DIKEMBALIKAN --}}
+                                    @elseif($status == 'dikembalikan')
+                                        <span class="badge bg-success px-3 py-1">Selesai</span>
 
-    {{-- SELESAI --}}
-    @elseif($item->status == 'dikembalikan')
-        <span class="badge bg-success">Selesai</span>
-
-    @endif
-
-</td>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
 
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">
+                            <td colspan="6" class="text-center text-muted">
                                 Data tidak tersedia
                             </td>
                         </tr>

@@ -14,9 +14,8 @@
     </div>
 </div>
 
-<div class="card border-0 shadow-sm rounded-4">
-    <div class="card-body p-4">
-
+<div class="card shadow-sm border-0 rounded-4 p-3">
+    <div class="table-responsive">
         <table class="table align-middle">
             <thead class="text-muted" style="font-size:13px;">
                 <tr>
@@ -28,7 +27,7 @@
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody style="font-size:14px;">
                 @foreach($data as $item)
                 <tr>
                     <td>{{ $item->nama }}</td>
@@ -40,30 +39,25 @@
                         @php
                             $today = \Carbon\Carbon::now();
                             $jatuhTempo = \Carbon\Carbon::parse($item->tanggal_jatuh_tempo);
+                            $status = strtolower(trim($item->status));
+                            $badge = 'secondary';
+                            $label = ucfirst($status);
+
+                            if($status == 'pending') $badge = 'warning';
+                            elseif($status == 'ditolak') $badge = 'danger';
+                            elseif($status == 'dikembalikan') $badge = 'success';
+                            elseif($status == 'dipinjam') {
+                                if($jatuhTempo < $today) {
+                                    $badge = 'danger';
+                                    $label = 'Terlambat';
+                                } else {
+                                    $badge = 'primary';
+                                    $label = 'Dipinjam';
+                                }
+                            }
                         @endphp
 
-                        {{-- STATUS  --}}
-                        @if($item->status == 'pending')
-                            <span class="badge bg-warning text-white">Pending</span>
-
-                        @elseif($item->status == 'ditolak')
-                            <span class="badge bg-danger">Ditolak</span>
-
-                        @elseif($item->status == 'dikembalikan')
-                            <span class="badge bg-success">Dikembalikan</span>
-
-                        @elseif($item->status == 'dipinjam')
-
-                            {{-- TERLAMBAT --}}
-                            @if($jatuhTempo < $today)
-                                <span class="badge bg-danger">Terlambat</span>
-                            @else
-                                <span class="badge bg-primary">Dipinjam</span>
-                            @endif
-
-                        @else
-                            <span class="badge bg-secondary">-</span>
-                        @endif
+                        <span class="badge bg-{{ $badge }} px-3 py-1">{{ $label }}</span>
                     </td>
 
                 </tr>
@@ -71,7 +65,6 @@
             </tbody>
 
         </table>
-
     </div>
 </div>
 

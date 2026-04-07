@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Petugas\PinjamBuku; // ✅ GANTI KE SINI
+use App\Models\Petugas\PinjamBuku;
 use App\Models\Anggota\Buku;
 
 class DashboardController extends Controller

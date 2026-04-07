@@ -35,7 +35,8 @@ body{
     <div class="card shadow-sm register-card">
         <div class="card-body p-4">
 
-            <h6 class="text-center mb-4">Register</h6>
+            <h6 class="text-center mb-4" style="font-weight: 700; color: #60a5fa; font-size: 18px;">Sistem Perpustakaan</h6>
+
 
             <form method="POST" action="/register">
                 @csrf

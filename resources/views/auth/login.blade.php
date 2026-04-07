@@ -35,7 +35,7 @@ body{
     <div class="card shadow-sm login-card">
         <div class="card-body p-4">
 
-            <h6 class="text-center mb-4">Login</h6>
+           <h6 class="text-center mb-4" style="font-weight: 700; color: #60a5fa; font-size: 18px;">Sistem Perpustakaan</h6>
 
             <form method="POST" action="/login">
                 @csrf

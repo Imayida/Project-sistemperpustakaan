@@ -40,32 +40,32 @@
 <div class="row mb-5">
 
     <div class="col-md-3">
-        <div class="card-box">
-            <small>Total Anggota</small>
-            <h4>234</h4>
-        </div>
+    <div class="card-box">
+        <small>Total Anggota</small>
+        <h4>{{ $totalAnggota }}</h4>
     </div>
+</div>
 
-    <div class="col-md-3">
-        <div class="card-box">
-            <small>Total Buku</small>
-            <h4>456</h4>
-        </div>
+<div class="col-md-3">
+    <div class="card-box">
+        <small>Total Buku</small>
+        <h4>{{ $totalBuku }}</h4>
     </div>
+</div>
 
-    <div class="col-md-3">
-        <div class="card-box">
-            <small>Total Peminjaman</small>
-            <h4>120</h4>
-        </div>
+<div class="col-md-3">
+    <div class="card-box">
+        <small>Total Peminjaman</small>
+        <h4>{{ $totalPeminjaman }}</h4>
     </div>
+</div>
 
-    <div class="col-md-3">
-        <div class="card-box">
-            <small>Total Terlambat</small>
-            <h4>25</h4>
-        </div>
+<div class="col-md-3">
+    <div class="card-box">
+        <small>Total Terlambat</small>
+        <h4>{{ $totalTerlambat }}</h4>
     </div>
+</div>
 
 </div>
 

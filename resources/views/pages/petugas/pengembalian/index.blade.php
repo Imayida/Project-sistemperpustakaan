@@ -29,7 +29,7 @@
                         <th>JUDUL BUKU</th>
                         <th>TANGGAL PINJAM</th>
                         <th>TANGGAL KEMBALI</th>
-                        <th>JATUH TEMPO</th>
+                        <th>TANGGAL JATUH TEMPO</th>
                         <th>DENDA</th>
                         <th>STATUS</th>
                         <th class="text-center">AKSI</th>
