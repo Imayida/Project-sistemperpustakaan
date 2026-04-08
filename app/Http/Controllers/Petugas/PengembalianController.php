@@ -15,32 +15,52 @@ class PengembalianController extends Controller
     }
     public function setujui($id)
 {
-    $data = \App\Models\Petugas\Pengembalian::findOrFail($id);
+    $data = Pengembalian::with('peminjaman')->findOrFail($id);
 
+    // pengembalian
     $data->update([
-        'status' => 'pending'
+        'status' => 'dikembalikan'
     ]);
+
+    // peminjaman
+    if ($data->peminjaman) {
+        $data->peminjaman->update([
+            'status' => 'dikembalikan'
+        ]);
+    }
 
     return back()->with('success', 'Pengembalian disetujui');
 }
 
 public function tolak($id)
 {
-    $data = \App\Models\Petugas\Pengembalian::findOrFail($id);
+    $data = Pengembalian::with('peminjaman')->findOrFail($id);
 
     $data->update([
         'status' => 'ditolak'
     ]);
 
+    if ($data->peminjaman) {
+        $data->peminjaman->update([
+            'status' => 'dipinjam'
+        ]);
+    }
+
     return back()->with('success', 'Pengembalian ditolak');
 }
 public function selesai($id)
 {
-    $data = \App\Models\Petugas\Pengembalian::findOrFail($id);
+    $data = Pengembalian::with('peminjaman')->findOrFail($id);
 
     $data->update([
-        'status' => 'pending'
+        'status' => 'selesai'
     ]);
+
+    if ($data->peminjaman) {
+        $data->peminjaman->update([
+            'status' => 'selesai'
+        ]);
+    }
 
     return back()->with('success', 'Pengembalian selesai');
 }

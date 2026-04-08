@@ -91,7 +91,7 @@ class BukuController extends Controller
             'pengarang' => 'required',
             'penerbit' => 'required',
             'tahun' => 'required|numeric',
-            'stok' => 'required|numeric',
+          'stok' => 'required|integer|min:0', // 🔥 ini penting
             'deskripsi' => 'nullable',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);

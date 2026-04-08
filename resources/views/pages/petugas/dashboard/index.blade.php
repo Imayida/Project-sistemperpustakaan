@@ -16,6 +16,10 @@
     </div>
 </div>
 
+<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+    Selamat datang di halaman dashboard petugas
+</p>
+
     <!-- CARD -->
     <div class="row mb-4">
         <!-- TOTAL ANGGOTA -->
@@ -136,4 +140,25 @@
     </div>
 </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.getElementById('search').addEventListener('keyup', function() {
+
+    let keyword = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#tableBody tr');
+
+    rows.forEach(function(row) {
+        let nama = row.children[0].textContent.toLowerCase(); // kolom NAMA
+
+        if (nama.includes(keyword)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+});
+</script>
 @endsection

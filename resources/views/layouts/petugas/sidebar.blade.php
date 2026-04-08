@@ -1,10 +1,10 @@
 <div class="sidebar">
 
-    <h5 class="fw-bold mb-4">Sistem Perpustakaan</h5>
+    <h5 class="fw-bold mb-4 text-center" style="color:#60a5fa;">Sistem Perpustakaan</h5>
 
     <!-- PROFILE -->
     <div class="text-center mb-4">
-        <img src="{{ asset('images/foto-saya.jpg') }}"
+        <img src="{{ asset('storage/buku.jpg') }}"
              class="rounded-circle mb-2"
              width="70"
              height="70"

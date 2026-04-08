@@ -2,7 +2,7 @@
 
 @section('content')
 
- <h4 class="fw-bold" style="color:#60a5fa;">Form Pengembalian</h4>
+<h4 class="fw-bold" style="color:#60a5fa;">Form Pengembalian</h4>
 
 <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body">
@@ -13,19 +13,30 @@
             <!-- Nama -->
             <div class="mb-3">
                 <label class="form-label small text-muted">Nama</label>
-                <input type="text" name="nama" class="form-control" placeholder="Masukkan nama lengkap">
+                <input type="text" id="nama" class="form-control" readonly>
             </div>
 
-            <!-- Judul Buku -->
+            <!-- PILIH PEMINJAMAN (dipindah ke bawah nama) -->
             <div class="mb-3">
-                <label class="form-label small text-muted">Judul Buku</label>
-                <input type="text" name="judul" class="form-control" placeholder="Masukkan judul buku">
+                <label>Judul Buku</label>
+                <select id="pinjamSelect" name="pinjam_buku_id" class="form-control">
+                    @foreach($peminjaman as $item)
+                        <option value="{{ $item->id }}"
+                            data-nama="{{ $item->nama }}"
+                            data-judul="{{ $item->judul }}"
+                            data-tanggal="{{ $item->tanggal_pinjam }}"
+                            data-tempo="{{ $item->tanggal_jatuh_tempo }}">
+
+                            {{ $item->judul }} - {{ $item->tanggal_pinjam }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <!-- Tanggal Pinjam -->
             <div class="mb-3">
                 <label class="form-label small text-muted">Tanggal Pinjam</label>
-                <input type="date" id="tanggal_pinjam" name="tanggal_pinjam" class="form-control" readonly>
+                <input type="date" id="tanggal_pinjam" class="form-control" readonly>
             </div>
 
             <!-- Tanggal Kembali -->
@@ -34,28 +45,25 @@
                 <input type="date" id="tanggal_kembali" name="tanggal_kembali" class="form-control">
             </div>
 
-            <!-- Tanggal Jatuh Tempo -->
+            <!-- Jatuh Tempo -->
             <div class="mb-3">
                 <label class="form-label small text-muted">Tanggal Jatuh Tempo</label>
-                <input type="date" id="jatuh_tempo" name="tanggal_jatuh_tempo" class="form-control" readonly>
+                <input type="date" id="jatuh_tempo" class="form-control" readonly>
             </div>
 
             <!-- Denda -->
             <div class="mb-3">
-                <label class="form-label small text-muted">Jumlah Denda</label>
-                <input type="number" id="denda" name="denda" class="form-control" readonly>
+                <label class="form-label small text-muted">Denda</label>
+                <input type="number" id="denda" class="form-control" readonly>
             </div>
 
-            <!-- Tombol -->
-            <div class="mt-4">
-                <button class="btn btn-primary btn-sm">
-                    Mengembalikan
-                </button>
+            <button type="submit" class="btn btn-primary btn-sm">
+                Mengembalikan
+            </button>
 
-                <a href="{{ route('pengembalian.index') }}" class="btn btn-secondary btn-sm">
-                    Kembali
-                </a>
-            </div>
+            <a href="{{ route('pengembalian.index') }}" class="btn btn-secondary btn-sm">
+                Kembali
+            </a>
 
         </form>
 
@@ -64,35 +72,43 @@
 
 @endsection
 
-
-{{-- 🔥 SCRIPT AUTO --}}
 @section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function(){
 
+    let select = document.getElementById('pinjamSelect');
+    let nama = document.getElementById('nama');
     let tanggalPinjam = document.getElementById('tanggal_pinjam');
-    let tanggalKembali = document.getElementById('tanggal_kembali');
-    let jatuhTempo = document.getElementById('jatuh_tempo');
+    let tempo = document.getElementById('jatuh_tempo');
+    let kembali = document.getElementById('tanggal_kembali');
     let denda = document.getElementById('denda');
 
-    // 🔹 otomatis isi tanggal pinjam hari ini
-    let today = new Date().toISOString().split('T')[0];
-    tanggalPinjam.value = today;
+    function isiData(){
+        let selected = select.options[select.selectedIndex];
 
-    // 🔹 otomatis jatuh tempo +7 hari
-    let tempo = new Date();
-    tempo.setDate(tempo.getDate() + 7);
-    jatuhTempo.value = tempo.toISOString().split('T')[0];
+        nama.value = selected.dataset.nama;
+        tanggalPinjam.value = selected.dataset.tanggal;
+        tempo.value = selected.dataset.tempo;
 
-    // 🔹 hitung denda saat tanggal kembali dipilih
-    tanggalKembali.addEventListener('change', function() {
+        denda.value = 0;
+        kembali.value = "";
+    }
 
-        let kembali = new Date(this.value);
-        let tempoDate = new Date(jatuhTempo.value);
+    // pertama load
+    isiData();
 
-        if (kembali > tempoDate) {
-            let selisih = Math.ceil((kembali - tempoDate) / (1000 * 60 * 60 * 24));
-            denda.value = selisih * 1000; // 1000 per hari
+    // saat pilih berubah
+    select.addEventListener('change', isiData);
+
+    // hitung denda
+    kembali.addEventListener('change', function(){
+
+        let tglKembali = new Date(this.value);
+        let tglTempo = new Date(tempo.value);
+
+        if (tglKembali > tglTempo) {
+            let selisih = Math.ceil((tglKembali - tglTempo) / (1000*60*60*24));
+            denda.value = selisih * 1000;
         } else {
             denda.value = 0;
         }

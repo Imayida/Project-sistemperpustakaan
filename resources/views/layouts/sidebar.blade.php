@@ -1,10 +1,10 @@
 <div class="sidebar">
 
-    <h5 class="fw-bold mb-4">Sistem Perpustakaan</h5>
+    <h5 class="fw-bold mb-4 text-center" style="color:#60a5fa;">Sistem Perpustakaan</h5>
 
     <!-- PROFILE -->
     <div class="text-center mb-4">
-        <img src="{{ asset('images/foto-saya.jpg') }}"
+        <img src="{{ asset('storage/buku.jpg') }}"
              class="rounded-circle mb-2"
              width="70"
              height="70"
@@ -14,11 +14,10 @@
     </div>
 
     <!-- Dashboard -->
-    <a href="{{ url('/dashboard') }}"
-       class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-        <i class="bi bi-grid"></i> Dashboard
-    </a>
-
+<a href="{{ route('dashboard') }}"
+   class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+    <i class="bi bi-grid"></i> Dashboard
+</a>
     <!-- Buku -->
     <a href="{{ route('buku.index') }}"
        class="menu-item {{ request()->routeIs('buku.*') ? 'active' : '' }}">

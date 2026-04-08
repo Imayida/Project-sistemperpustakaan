@@ -1,175 +1,139 @@
 <?php
 
-use App\Http\Controllers\Anggota\DashboardController;
 use App\Http\Controllers\Anggota\BukuController;
-use App\Http\Controllers\Anggota\PinjamBukuController;
+use App\Http\Controllers\Anggota\DashboardController;
 use App\Http\Controllers\Anggota\PengembalianController;
-use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
-use App\Http\Controllers\Petugas\BukuController as PetugasBukuController;
-use App\Http\Controllers\Petugas\PinjamBukuController as PetugasPinjamBukuController;
-use App\Http\Controllers\Petugas\AnggotaController;
-use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
-use App\Http\Controllers\Kepala\DashboardController as KepalaDashboardController;
-use App\Http\Controllers\Kepala\BukuController as KepalaBukuController;
-
+use App\Http\Controllers\Anggota\PinjamBukuController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Kepala\BukuController as KepalaBukuController;
+use App\Http\Controllers\Kepala\DashboardController as KepalaDashboardController;
+use App\Http\Controllers\Kepala\LaporanController;
+use App\Http\Controllers\Petugas\AnggotaController;
+use App\Http\Controllers\Petugas\BukuController as PetugasBukuController;
+use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
+use App\Http\Controllers\Petugas\PengembalianController as PetugasPengembalianController;
+use App\Http\Controllers\Petugas\PinjamBukuController as PetugasPinjamBukuController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-// HALAMAN AWAL LANGSUNG KE LOGIN
-Route::get('/', [AuthController::class, 'login']);
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
 
-// LOGIN
-Route::get('/login', [AuthController::class, 'login']);
+Route::get('/', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'prosesLogin']);
 
-// REGISTER
 Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'prosesRegister']);
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// ANGGOTA
-// DASBOARD ANGGOTA
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-// BUKU
-Route::get('/anggota/buku', [BukuController::class,'index'])->name('buku.index');
-Route::get('/anggota/buku/{id}', [BukuController::class,'detail'])->name('buku.detail');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
 
 
-//  FORM PINJAM (dari detail buku)
-Route::get('/anggota/pinjambuku/{id}', [PinjamBukuController::class, 'create'])->name('pinjambuku.create');
-//  SIMPAN DATA
-Route::post('/anggota/pinjambuku', [PinjamBukuController::class, 'store'])->name('pinjambuku.store');
-//  TABEL PEMINJAMAN
-Route::get('/anggota/peminjaman', [PinjamBukuController::class, 'index'])->name('peminjaman.index');
+/*
+|--------------------------------------------------------------------------
+| ANGGOTA
+|--------------------------------------------------------------------------
+*/
 
-//  PENGEMBALIAN
-Route::get('/anggota/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
-Route::delete('/anggota/pengembalian/{id}', [PengembalianController::class, 'destroy'])->name('pengembalian.delete');
-Route::get('/anggota/pengembalian/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
-Route::post('/anggota/pengembalian', [PengembalianController::class, 'store'])->name('pengembalian.store');
+Route::middleware(['auth', 'role:anggota'])->prefix('anggota')->group(function () {
 
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// =======================
-// DASHBOARD PETUGAS
-// =======================
-Route::get('/petugas/dashboard', [PetugasDashboardController::class, 'index'])->name('petugas.dashboard');
+    // Buku
+    Route::get('/buku', [BukuController::class,'index'])->name('buku.index');
+    Route::get('/buku/{id}', [BukuController::class,'detail'])->name('buku.detail');
 
+    // Peminjaman
+    Route::get('/pinjambuku/{id}', [PinjamBukuController::class, 'create'])->name('pinjambuku.create');
+    Route::post('/pinjambuku', [PinjamBukuController::class, 'store'])->name('pinjambuku.store');
+    Route::get('/peminjaman', [PinjamBukuController::class, 'index'])->name('peminjaman.index');
 
-// =======================
-// CRUD BUKU PETUGAS
-// =======================
+    // Pengembalian
+   Route::get('/pengembalian', [PengembalianController::class, 'index'])
+    ->name('pengembalian.index');
 
-// INDEX (WAJIB ADA!)
-Route::get('/petugas/buku', [PetugasBukuController::class, 'index'])
-    ->name('petugas.buku.index');
+Route::get('/pengembalian/create', [PengembalianController::class, 'create'])
+    ->name('pengembalian.create');
 
-// CREATE (HARUS DI ATAS {id})
-Route::get('/petugas/buku/create', [PetugasBukuController::class, 'create'])
-    ->name('petugas.buku.create');
+Route::post('/pengembalian', [PengembalianController::class, 'store'])
+    ->name('pengembalian.store');
 
-// STORE
-Route::post('/petugas/buku', [PetugasBukuController::class, 'store'])
-    ->name('petugas.buku.store');
+Route::delete('/pengembalian/{id}', [PengembalianController::class, 'destroy'])
+    ->name('pengembalian.delete');
+});
 
-// EDIT
-Route::get('/petugas/buku/{id}/edit', [PetugasBukuController::class, 'edit'])
-    ->name('petugas.buku.edit');
+Route::get('/anggota/pengembalian/create', [App\Http\Controllers\Anggota\PengembalianController::class, 'create'])
+    ->name('pengembalian.create.simple');
 
-// SHOW
-Route::get('/petugas/buku/{id}', [PetugasBukuController::class, 'show'])
-    ->name('petugas.buku.show');
+/*
+|--------------------------------------------------------------------------
+| PETUGAS
+|--------------------------------------------------------------------------
+*/
 
-// UPDATE
-Route::put('/petugas/buku/{id}', [PetugasBukuController::class, 'update'])
-    ->name('petugas.buku.update');
+Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->group(function () {
 
-// DELETE
-Route::delete('/petugas/buku/{id}', [PetugasBukuController::class, 'destroy'])
-    ->name('petugas.buku.destroy');
+    Route::get('/dashboard', [PetugasDashboardController::class, 'index'])->name('petugas.dashboard');
 
+    // Buku (CRUD)
+    Route::resource('/buku', PetugasBukuController::class)->names('petugas.buku');
 
-// =======================
-// DATA PEMINJAMAN PETUGAS
-// =======================
+    // Peminjaman
+    Route::resource('/peminjaman', PetugasPinjamBukuController::class)->names('petugas.peminjaman');
 
-// INDEX
-Route::get('/petugas/peminjaman', [PetugasPinjamBukuController::class, 'index'])
-    ->name('petugas.peminjaman.index');
+    Route::post('/peminjaman/{id}/kembalikan', [PetugasPinjamBukuController::class, 'kembalikan'])
+        ->name('petugas.peminjaman.kembalikan');
 
-// CREATE (WAJIB DI ATAS {id})
-Route::get('/petugas/peminjaman/create', [PetugasPinjamBukuController::class, 'create'])
-    ->name('petugas.peminjaman.create');
+    Route::post('/peminjaman/{id}/setujui', [PetugasPinjamBukuController::class, 'setujui'])
+        ->name('petugas.peminjaman.setujui');
 
-// STORE (DIBENERIN - TANPA /store)
-Route::post('/petugas/peminjaman', [PetugasPinjamBukuController::class, 'store'])
-    ->name('petugas.peminjaman.store');
+    Route::post('/peminjaman/{id}/tolak', [PetugasPinjamBukuController::class, 'tolak'])
+        ->name('petugas.peminjaman.tolak');
 
-// SHOW
-Route::get('/petugas/peminjaman/{id}', [PetugasPinjamBukuController::class, 'show'])
-    ->name('petugas.peminjaman.show');
+    // Anggota
+    Route::get('/anggota', [AnggotaController::class, 'index'])->name('petugas.anggota.index');
+    Route::delete('/anggota/{id}', [AnggotaController::class, 'delete'])->name('petugas.anggota.delete');
 
-// EDIT
-Route::get('/petugas/peminjaman/{id}/edit', [PetugasPinjamBukuController::class, 'edit'])
-    ->name('petugas.peminjaman.edit');
+    // Pengembalian
+    Route::get('/pengembalian', [PetugasPengembalianController::class, 'index'])
+        ->name('petugas.pengembalian.index');
 
-// UPDATE
-Route::put('/petugas/peminjaman/{id}', [PetugasPinjamBukuController::class, 'update'])
-    ->name('petugas.peminjaman.update');
+    Route::post('/pengembalian/{id}/setujui', [PetugasPengembalianController::class, 'setujui'])
+        ->name('petugas.pengembalian.setujui');
 
-// DELETE (NAMA DIRAPIKAN)
-Route::delete('/petugas/peminjaman/{id}', [PetugasPinjamBukuController::class, 'destroy'])
-    ->name('petugas.peminjaman.destroy');
+    Route::post('/pengembalian/{id}/tolak', [PetugasPengembalianController::class, 'tolak'])
+        ->name('petugas.pengembalian.tolak');
 
-// KEMBALIKAN (FITUR TAMBAHAN)
-Route::post('/petugas/peminjaman/{id}/kembalikan', [PetugasPinjamBukuController::class, 'kembalikan'])
-    ->name('petugas.peminjaman.kembalikan');
+    Route::post('/pengembalian/{id}/selesai', [PetugasPengembalianController::class, 'selesai'])
+        ->name('petugas.pengembalian.selesai');
 
- Route::post('/petugas/peminjaman/{id}/setujui', [PetugasPinjamBukuController::class, 'setujui'])
-    ->name('petugas.peminjaman.setujui');
-
-Route::post('/petugas/peminjaman/{id}/tolak', [PetugasPinjamBukuController::class, 'tolak'])
-    ->name('petugas.peminjaman.tolak');
-
-// DATA ANGGOTA
-// tampil data anggota
-Route::get('/petugas/anggota', [AnggotaController::class, 'index'])->name('petugas.anggota.index');
-// hapus anggota
-Route::delete('/petugas/anggota/{id}', [AnggotaController::class, 'delete'])->name('petugas.anggota.delete');
+    Route::delete('/pengembalian/{id}', [PetugasPengembalianController::class, 'destroy'])
+        ->name('petugas.pengembalian.delete');
+});
 
 
-// DATA PENGEMBALIAN
-Route::get('/petugas/pengembalian', [PetugasPengembalianController::class, 'index'])
-    ->name('petugas.pengembalian.index');
+/*
+|--------------------------------------------------------------------------
+| KEPALA
+|--------------------------------------------------------------------------
+*/
 
-Route::post('/petugas/pengembalian/{id}/setujui', [PetugasPengembalianController::class, 'setujui'])
-    ->name('petugas.pengembalian.setujui');
+Route::middleware(['auth', 'role:kepala'])->prefix('kepala')->group(function () {
 
-Route::post('/petugas/pengembalian/{id}/tolak', [PetugasPengembalianController::class, 'tolak'])
-    ->name('petugas.pengembalian.tolak');
+    Route::get('/dashboard', [KepalaDashboardController::class, 'index'])->name('kepala.dashboard');
 
-Route::post('/petugas/pengembalian/{id}/selesai', [PetugasPengembalianController::class, 'selesai'])
-    ->name('petugas.pengembalian.selesai');
+    Route::get('/buku', [KepalaBukuController::class, 'index'])->name('kepala.buku.index');
 
-Route::delete('/petugas/pengembalian/{id}', [PetugasPengembalianController::class, 'destroy'])
-    ->name('petugas.pengembalian.delete');
+    Route::get('/buku/{id}', [KepalaBukuController::class, 'detail'])->name('kepala.buku.detail');
 
-// =======================
-// KEPALA
-// =======================
+Route::get('/laporan', [LaporanController::class, 'index'])->name('kepala.laporan');
+});
 
-// Dashboard
-Route::get('/kepala/dashboard', [KepalaDashboardController::class, 'index'])->name('kepala.dashboard');
 
-// Data Buku
-Route::get('/kepala/buku', [KepalaBukuController::class, 'index'])->name('kepala.buku.index');
-
-// Detail Buku
-Route::get('/kepala/buku/{id}', [KepalaBukuController::class, 'detail'])->name('kepala.buku.detail');
-
-// Laporan
-Route::get('/kepala/laporan', function () {
-    return view('pages.kepala.laporan.index');
-})->name('kepala.laporan');

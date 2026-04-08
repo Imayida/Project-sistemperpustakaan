@@ -4,13 +4,14 @@ namespace App\Models\Anggota;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Anggota\Buku; 
+use App\Models\Anggota\Buku;
 
 class PinjamBuku extends Model
 {
     protected $table = 'pinjam_buku';
 
     protected $fillable = [
+    'user_id',
     'nama',
     'judul',
     'tanggal_pinjam',

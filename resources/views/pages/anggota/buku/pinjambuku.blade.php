@@ -9,6 +9,13 @@
         <h4 class="fw-bold" style="color:#60a5fa;">Form Pinjam Buku</h4>
     </div>
 
+    <!-- ALERT -->
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!-- FORM CARD -->
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-4">
@@ -16,16 +23,16 @@
             <form action="{{ route('pinjambuku.store') }}" method="POST">
                 @csrf
 
-                <!-- Nama -->
+                <!-- NAMA (AUTO DARI USER LOGIN) -->
                 <div class="mb-3">
                     <label class="form-label small text-muted">Nama</label>
                     <input type="text"
-                           name="nama"
                            class="form-control"
-                           placeholder="Masukan Nama Lengkap">
+                           value="{{ auth()->user()->name }}"
+                           readonly>
                 </div>
 
-                <!-- Judul Buku (DARI DETAIL) -->
+                <!-- JUDUL BUKU -->
                 <div class="mb-3">
                     <label class="form-label small text-muted">Judul Buku</label>
                     <input type="text"
@@ -35,23 +42,25 @@
                            readonly>
                 </div>
 
-                <!-- Tanggal Pinjam -->
+                <!-- TANGGAL PINJAM -->
                 <div class="mb-3">
                     <label class="form-label small text-muted">Tanggal Pinjam</label>
                     <input type="date"
                            id="tanggal_pinjam"
                            name="tanggal_pinjam"
-                           class="form-control">
+                           class="form-control"
+                           required>
                 </div>
 
-                <!-- Tanggal Jatuh Tempo  -->
+                <!-- TANGGAL JATUH TEMPO -->
                 <div class="mb-4">
                     <label class="form-label small text-muted">Tanggal Jatuh Tempo</label>
                     <input type="date"
                            id="tanggal_jatuh_tempo"
                            name="tanggal_jatuh_tempo"
                            class="form-control"
-                           readonly>
+                           readonly
+                           required>
                 </div>
 
                 <!-- BUTTON -->
@@ -72,7 +81,7 @@
 
 </div>
 
-<!-- SCRIPT JATUH TEMPO -->
+<!-- SCRIPT AUTO +7 HARI -->
 <script>
 document.getElementById('tanggal_pinjam').addEventListener('change', function() {
     let tgl = new Date(this.value);

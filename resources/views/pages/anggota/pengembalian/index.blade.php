@@ -5,10 +5,16 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
      <h4 class="fw-bold" style="color:#60a5fa;">Data Pengembalian</h4>
 
-    <a href="{{ route('pengembalian.create') }}" class="btn btn-primary btn-sm">
-        Kembalikan Buku +
-    </a>
+    <a href="{{ route('pengembalian.create.simple') }}"
+   class="btn btn-primary btn-sm">
+   Kembalikan Buku +
+</a>
 </div>
+
+<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+    Selamat datang di halaman data pengembalian
+</p>
+
 
 <div class="card shadow-sm border-0 rounded-4 p-3">
 

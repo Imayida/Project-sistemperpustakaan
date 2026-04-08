@@ -59,6 +59,10 @@
     <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
 </div>
 
+<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+    Selamat datang di halaman koleksi buku
+</p>
+
 <div class="row g-4">
 
 @forelse($buku as $item)

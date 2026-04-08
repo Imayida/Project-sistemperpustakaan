@@ -11,6 +11,7 @@ class Pengembalian extends Model
     protected $table = 'pengembalian';
 
     protected $fillable = [
+        'pinjam_buku_id', // 🔥 TAMBAH INI
         'nama',
         'judul',
         'tanggal_pinjam',
@@ -34,5 +35,11 @@ class Pengembalian extends Model
     public function petugas()
     {
         return $this->belongsTo(User::class, 'petugas_id');
+    }
+
+    // 🔥 RELASI KE PEMINJAMAN (INI YANG PENTING)
+    public function peminjaman()
+    {
+        return $this->belongsTo(\App\Models\Anggota\PinjamBuku::class, 'pinjam_buku_id');
     }
 }

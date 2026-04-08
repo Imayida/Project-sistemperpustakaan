@@ -14,6 +14,10 @@
     </div>
 </div>
 
+<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+    Selamat datang di halaman data peminjaman
+</p>
+
 <div class="card shadow-sm border-0 rounded-4 p-3">
     <div class="table-responsive">
         <table class="table align-middle">

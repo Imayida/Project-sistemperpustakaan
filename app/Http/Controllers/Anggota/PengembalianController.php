@@ -3,55 +3,68 @@
 namespace App\Http\Controllers\Anggota;
 
 use App\Http\Controllers\Controller;
-use App\Models\Anggota\Pengembalian;
 use Illuminate\Http\Request;
+use App\Models\Anggota\PinjamBuku;
+use App\Models\Petugas\Pengembalian;
+use Illuminate\Support\Facades\Auth;
 
 class PengembalianController extends Controller
 {
+    // INDEX
     public function index()
     {
-        $data = Pengembalian::latest()->get();
+        $data = Pengembalian::where('nama', Auth::user()->name)
+                ->latest()
+                ->get();
 
         return view('pages.anggota.pengembalian.index', compact('data'));
     }
 
-    public function destroy($id)
+    // FORM CREATE
+    public function create()
     {
-        $data = Pengembalian::findOrFail($id);
-        $data->delete();
+        $peminjaman = PinjamBuku::where('nama', Auth::user()->name)
+                        ->where('status', 'dipinjam')
+                        ->get();
 
-        return redirect()->back()->with('success', 'Data berhasil dihapus');
+        return view('pages.anggota.pengembalian.create', compact('peminjaman'));
     }
 
-    public function create()
-{
-    return view('pages.anggota.pengembalian.create');
-}
+    // SIMPAN
+    public function store(Request $request)
+    {
+        $request->validate([
+            'pinjam_buku_id' => 'required',
+            'tanggal_kembali' => 'required|date',
+        ]);
 
-public function store(Request $request)
-{
-    $request->validate([
-        'nama' => 'required',
-        'judul' => 'required',
-        'tanggal_pinjam' => 'required',
-        'tanggal_kembali' => 'required',
-        'tanggal_jatuh_tempo' => 'required',
-        'denda' => 'required'
-    ]);
+        $pinjam = PinjamBuku::findOrFail($request->pinjam_buku_id);
 
-    \App\Models\Anggota\Pengembalian::create([
-    'nama' => $request->nama,
-    'judul' => $request->judul,
-    'tanggal_pinjam' => $request->tanggal_pinjam,
-    'tanggal_kembali' => $request->tanggal_kembali,
-    'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
-    'denda' => $request->denda,
-    'status' => 'pending' // 🔥 GANTI INI
-]);
+        // hitung denda
+        $denda = 0;
+        if ($request->tanggal_kembali > $pinjam->tanggal_jatuh_tempo) {
+            $selisih = (strtotime($request->tanggal_kembali) - strtotime($pinjam->tanggal_jatuh_tempo)) / 86400;
+            $denda = ceil($selisih) * 1000;
+        }
 
-    return redirect()->route('pengembalian.index')
-        ->with('success', 'Buku berhasil dikembalikan');
-}
+        // ✅ simpan pengembalian (status pending)
+        Pengembalian::create([
+            'pinjam_buku_id' => $pinjam->id,
+            'nama' => Auth::user()->name,
+            'judul' => $pinjam->judul,
+            'tanggal_pinjam' => $pinjam->tanggal_pinjam,
+            'tanggal_kembali' => $request->tanggal_kembali,
+            'tanggal_jatuh_tempo' => $pinjam->tanggal_jatuh_tempo,
+            'denda' => $denda,
+            'status' => 'pending'
+        ]);
 
+        // ❌ HAPUS bagian ini (biar tidak langsung dikembalikan)
+        // $pinjam->update([
+        //     'status' => 'dikembalikan'
+        // ]);
 
+        return redirect()->route('pengembalian.index')
+            ->with('success', 'Pengembalian berhasil dikirim, menunggu konfirmasi petugas');
+    }
 }

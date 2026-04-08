@@ -20,31 +20,28 @@ class AuthController extends Controller
     // ========================
     // PROSES LOGIN
     // ========================
-    public function prosesLogin(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+   public function prosesLogin(Request $request)
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+    if (Auth::attempt($credentials)) {
 
-            $request->session()->regenerate();
+        $user = Auth::user();
 
-            $user = Auth::user();
-
-            // 🔥 REDIRECT SESUAI ROLE (INI YANG DIPERBAIKI)
-            if ($user->role === 'kepala') {
-                return redirect('/kepala/dashboard');
-            } elseif ($user->role === 'petugas') {
-                return redirect('/petugas/dashboard');
-            } else {
-                return redirect('/dashboard'); // anggota
-            }
+        // 🔥 REDIRECT SESUAI ROLE
+        if ($user->role == 'anggota') {
+            return redirect('/anggota/dashboard');
+        } elseif ($user->role == 'petugas') {
+            return redirect('/petugas/dashboard');
+        } elseif ($user->role == 'kepala') {
+            return redirect('/kepala/dashboard');
         }
 
-        return back()->with('error','Email atau password salah');
+        return redirect('/login');
     }
+
+    return back()->with('error', 'Email atau password salah');
+}
 
     // ========================
     // HALAMAN REGISTER

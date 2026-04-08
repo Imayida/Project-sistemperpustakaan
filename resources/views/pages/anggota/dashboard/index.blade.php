@@ -4,20 +4,16 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold" style="color:#60a5fa;">Dashboard Anggota</h4>
-
-    <div class="mx-auto" style="width:280px;">
-        <input type="text"
-        id="search"
-        class="form-control"
-        placeholder="Search..."
-        style="border-radius:10px;">
-    </div>
 </div>
+
+<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+    Selamat datang di halaman dashboard anggota
+</p>
 
 <div class="row mb-4 justify-content-center">
 
     <!-- Total Peminjaman -->
-    <div class="col-md-3 col-6">
+    <div class="col-md-4 col-6">
         <div class="card border-0 shadow-sm rounded-3 p-3">
             <div class="d-flex justify-content-between align-items-center">
 
@@ -25,7 +21,7 @@
                     <small class="text-muted d-block" style="font-size:13px;">
                         Total Peminjaman
                     </small>
-                    <h4 class="fw-bold mb-0">0</h4>
+                    <h4 class="fw-bold mb-0">{{ $totalPinjam }}</h4>
                 </div>
 
                 <i class="bi bi-journal-arrow-down fs-3 text-dark"></i>
@@ -35,7 +31,7 @@
     </div>
 
     <!-- Total Dikembalikan -->
-    <div class="col-md-3 col-6">
+    <div class="col-md-4 col-6">
         <div class="card border-0 shadow-sm rounded-3 p-3">
             <div class="d-flex justify-content-between align-items-center">
 
@@ -43,7 +39,7 @@
                     <small class="text-muted d-block" style="font-size:13px;">
                         Total Dikembalikan
                     </small>
-                    <h4 class="fw-bold mb-0">0</h4>
+                    <h4 class="fw-bold mb-0">{{ $totalKembali }}</h4>
                 </div>
 
                 <i class="bi bi-check-circle fs-3 text-dark"></i>
@@ -53,7 +49,7 @@
     </div>
 
     <!-- Total Buku -->
-    <div class="col-md-3 col-6">
+    <div class="col-md-4 col-6">
         <div class="card border-0 shadow-sm rounded-3 p-3">
             <div class="d-flex justify-content-between align-items-center">
 
@@ -61,28 +57,10 @@
                     <small class="text-muted d-block" style="font-size:13px;">
                         Total Buku
                     </small>
-                    <h4 class="fw-bold mb-0">0</h4>
+                    <h4 class="fw-bold mb-0">{{ $totalBuku }}</h4>
                 </div>
 
                 <i class="bi bi-book fs-3 text-dark"></i>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Total Anggota -->
-    <div class="col-md-3 col-6">
-        <div class="card border-0 shadow-sm rounded-3 p-3">
-            <div class="d-flex justify-content-between align-items-center">
-
-                <div class="text-start">
-                    <small class="text-muted d-block" style="font-size:13px;">
-                        Total Anggota
-                    </small>
-                    <h4 class="fw-bold mb-0">0</h4>
-                </div>
-
-                <i class="bi bi-people fs-3 text-dark"></i>
 
             </div>
         </div>
@@ -147,25 +125,4 @@
     </div>
 </div>
 
-@endsection
-
-@section('scripts')
-<script>
-document.getElementById('search').addEventListener('keyup', function() {
-
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('tbody tr');
-
-    rows.forEach(function(row) {
-        let nama = row.children[0].textContent.toLowerCase();
-
-        if (nama.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-});
-</script>
 @endsection

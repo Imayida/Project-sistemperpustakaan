@@ -14,6 +14,10 @@
         </div>
     </div>
 
+    <p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+    Selamat datang di halaman data peminjaman
+</p>
+
     <!-- Card -->
     <div class="card shadow-sm border-0 rounded-4 p-3">
 
@@ -110,7 +114,7 @@
                     @empty
                         <tr>
                             <td colspan="6" class="text-center text-muted">
-                                Data tidak tersedia
+                                Belum Ada Data
                             </td>
                         </tr>
                     @endforelse
