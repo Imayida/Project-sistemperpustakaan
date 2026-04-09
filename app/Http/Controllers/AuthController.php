@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        // 🔥 REDIRECT SESUAI ROLE
+        //  REDIRECT SESUAI ROLE
         if ($user->role == 'anggota') {
             return redirect('/anggota/dashboard');
         } elseif ($user->role == 'petugas') {
@@ -79,7 +79,7 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        // 🔥 biar session bersih (lebih aman)
+        //  biar session bersih (lebih aman)
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

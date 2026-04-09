@@ -47,8 +47,8 @@ Route::middleware(['auth', 'role:anggota'])->prefix('anggota')->group(function (
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Buku
-    Route::get('/buku', [BukuController::class,'index'])->name('buku.index');
-    Route::get('/buku/{id}', [BukuController::class,'detail'])->name('buku.detail');
+    Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
+    Route::get('/buku/{id}', [BukuController::class, 'detail'])->name('buku.detail');
 
     // Peminjaman
     Route::get('/pinjambuku/{id}', [PinjamBukuController::class, 'create'])->name('pinjambuku.create');

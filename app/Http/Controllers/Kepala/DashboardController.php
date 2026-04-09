@@ -6,25 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Models\Petugas\Buku;
 use App\Models\Petugas\PinjamBuku;
 use App\Models\User;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        // Total anggota
         $totalAnggota = User::where('role', 'anggota')->count();
+
+        // Total buku
         $totalBuku = Buku::count();
+
+        // Total peminjaman
         $totalPeminjaman = PinjamBuku::count();
 
-
-$totalTerlambat = PinjamBuku::where('tanggal_jatuh_tempo', '<', Carbon::now())
-    ->count();
+        // Total dikembalikan
+        $totalDikembalikan = PinjamBuku::where('status', 'dikembalikan')->count();
 
         return view('pages.kepala.dashboard.index', compact(
             'totalAnggota',
             'totalBuku',
             'totalPeminjaman',
-            'totalTerlambat'
+            'totalDikembalikan'
         ));
     }
 }

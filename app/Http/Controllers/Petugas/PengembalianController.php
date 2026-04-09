@@ -9,7 +9,9 @@ class PengembalianController extends Controller
 {
     public function index()
     {
-        $data = Pengembalian::with(['user','buku'])->get();
+        $data = Pengembalian::with(['user','buku'])
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         return view('pages.petugas.pengembalian.index', compact('data'));
     }

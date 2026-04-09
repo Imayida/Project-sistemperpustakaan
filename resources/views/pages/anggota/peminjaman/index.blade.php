@@ -4,14 +4,6 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold" style="color:#60a5fa;">Data Peminjaman</h4>
-
-    <div class="mx-auto" style="width:280px;">
-        <input type="text"
-               id="search"
-               class="form-control"
-               placeholder="Search..."
-               style="border-radius:10px;">
-    </div>
 </div>
 
 <p style="color:#6b7280; font-size:14px; margin-top:-10px;">
@@ -74,24 +66,3 @@
 
 @endsection
 
-@section('scripts')
-<script>
-document.getElementById('search').addEventListener('keyup', function() {
-
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('tbody tr');
-
-    rows.forEach(function(row) {
-        let nama = row.children[0].textContent.toLowerCase();
-        let judul = row.children[1].textContent.toLowerCase();
-
-        if (nama.includes(keyword) || judul.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-});
-</script>
-@endsection

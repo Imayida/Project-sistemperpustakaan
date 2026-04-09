@@ -6,7 +6,7 @@
 
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-       <h4 class="fw-bold" style="color:#60a5fa;">Data Pengembalian</h4>
+        <h4 class="fw-bold" style="color:#60a5fa;">Data Pengembalian</h4>
 
         <div class="mx-auto" style="width:280px;">
             <input type="text"
@@ -18,8 +18,8 @@
     </div>
 
     <p style="color:#6b7280; font-size:14px; margin-top:-10px;">
-    Selamat datang di halaman data pengembalian
-</p>
+        Selamat datang di halaman data pengembalian
+    </p>
 
     <!-- Card -->
     <div class="card shadow-sm border-0 rounded-4 p-3">
@@ -40,9 +40,9 @@
                     </tr>
                 </thead>
 
-                <tbody style="font-size:14px;">
-                    @forelse($data as $item)
-                    <tr>
+                <tbody id="data-table" style="font-size:14px;">
+                    @forelse($data as $index => $item)
+                    <tr class="data-row" data-index="{{ $index }}">
 
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->judul }}</td>
@@ -51,14 +51,12 @@
                         <td>{{ $item->tanggal_jatuh_tempo }}</td>
 
                         <td>
-                            Rp {{ number_format($item->denda ?? 0, 0, ',', '.') }}
+                            {{ number_format($item->denda ?? 0, 0, ',', '.') }}
                         </td>
 
                         <!-- STATUS -->
                         <td>
-                            @php
-                                $status = strtolower(trim($item->status));
-                            @endphp
+                            @php $status = strtolower(trim($item->status)); @endphp
 
                             @if($status == 'pending')
                                 <span class="badge bg-warning text-white px-3 py-1">Pending</span>
@@ -72,52 +70,40 @@
                         </td>
 
                         <!-- AKSI -->
-                       <td>
-    <div class="d-flex justify-content-center gap-1">
+                        <td>
+                            <div class="d-flex justify-content-center gap-1">
 
-        {{-- SAAT PENDING --}}
-        @if($status == 'pending')
+                                @if($status == 'pending')
 
-            <form action="{{ route('petugas.pengembalian.setujui', $item->id) }}" method="POST">
-                @csrf
-                <button class="btn btn-success btn-sm">
-                    Setujui
-                </button>
-            </form>
+                                    <form action="{{ route('petugas.pengembalian.setujui', $item->id) }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-success btn-sm">Setujui</button>
+                                    </form>
 
-            <form action="{{ route('petugas.pengembalian.tolak', $item->id) }}" method="POST">
-                @csrf
-                <button class="btn btn-danger btn-sm">
-                    Tolak
-                </button>
-            </form>
+                                    <form action="{{ route('petugas.pengembalian.tolak', $item->id) }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-danger btn-sm">Tolak</button>
+                                    </form>
 
-        {{-- SAAT SUDAH DIKEMBALIKAN --}}
-        @elseif($status == 'dikembalikan')
+                                @elseif($status == 'dikembalikan')
 
-            {{-- SELESAI --}}
-            <form action="{{ route('petugas.pengembalian.selesai', $item->id) }}" method="POST">
-                @csrf
-                <button class="btn btn-primary btn-sm">
-                    Selesai
-                </button>
-            </form>
+                                    <form action="{{ route('petugas.pengembalian.selesai', $item->id) }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-primary btn-sm">Selesai</button>
+                                    </form>
 
-            {{-- DELETE --}}
-            <form action="{{ route('petugas.pengembalian.delete', $item->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-secondary btn-sm">
-                    Hapus
-                </button>
-            </form>
+                                    <form action="{{ route('petugas.pengembalian.delete', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
 
-        @else
-            <span class="text-muted">-</span>
-        @endif
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
 
-    </div>
-</td>
+                            </div>
+                        </td>
 
                     </tr>
 
@@ -133,8 +119,67 @@
             </table>
         </div>
 
+        <!-- TOMBOL -->
+        <div class="d-flex justify-content-end mt-3">
+    <button id="toggleBtn" class="btn btn-outline-primary">
+        Lihat Semua
+    </button>
+</div>
+
     </div>
 
 </div>
 
+@endsection
+
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const rows = document.querySelectorAll('.data-row');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const search = document.getElementById('search');
+
+    let showAll = false;
+
+    // 🔥 tampil awal (4 data)
+    function tampilAwal() {
+        rows.forEach((row, index) => {
+            row.style.display = index < 4 ? '' : 'none';
+        });
+    }
+
+    tampilAwal();
+
+    // 🔁 toggle lihat semua
+    toggleBtn.addEventListener('click', function() {
+        showAll = !showAll;
+
+        if (showAll) {
+            rows.forEach(row => row.style.display = '');
+            toggleBtn.innerText = 'Tampilkan Sedikit';
+        } else {
+            tampilAwal();
+            toggleBtn.innerText = 'Lihat Semua';
+        }
+    });
+
+    // 🔍 search sederhana
+    search.addEventListener('keyup', function() {
+        let keyword = this.value.toLowerCase();
+
+        rows.forEach(function(row) {
+            let text = row.innerText.toLowerCase();
+
+            if (text.includes(keyword)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+});
+</script>
 @endsection

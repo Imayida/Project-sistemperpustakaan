@@ -32,7 +32,6 @@
         font-weight: bold;
     }
 
-    
     .welcome-box {
         background: #ffffff;
         padding: 25px;
@@ -59,6 +58,7 @@
 
 <div class="row mb-5">
 
+    <!-- Total Anggota -->
     <div class="col-md-3">
         <div class="card-box d-flex justify-content-between align-items-center">
             <div>
@@ -69,6 +69,7 @@
         </div>
     </div>
 
+    <!-- Total Buku -->
     <div class="col-md-3">
         <div class="card-box d-flex justify-content-between align-items-center">
             <div>
@@ -79,6 +80,7 @@
         </div>
     </div>
 
+    <!-- Total Peminjaman -->
     <div class="col-md-3">
         <div class="card-box d-flex justify-content-between align-items-center">
             <div>
@@ -89,24 +91,23 @@
         </div>
     </div>
 
+    <!-- Total Dikembalikan -->
     <div class="col-md-3">
         <div class="card-box d-flex justify-content-between align-items-center">
             <div>
-                <small>Total Terlambat</small>
-                <h4>{{ $totalTerlambat }}</h4>
+                <small>Total Dikembalikan</small>
+                <h4>{{ $totalDikembalikan }}</h4>
             </div>
-            <i class="bi bi-exclamation-triangle fs-2 text-dark"></i>
+            <i class="bi bi-check-circle fs-2 text-dark"></i>
         </div>
     </div>
 
 </div>
 
-
 <div class="welcome-box">
-    <h5>Selamat Datang </h5>
+    <h5>Selamat Datang</h5>
     <p>
         Selamat Datang Di Halaman Dashboard Kepala Perpustakaan.
-
     </p>
 </div>
 

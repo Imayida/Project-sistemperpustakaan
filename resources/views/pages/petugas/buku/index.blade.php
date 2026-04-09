@@ -3,9 +3,7 @@
 @section('content')
 
 <style>
-    .col-custom {
-        width: 20%;
-    }
+    .col-custom { width: 20%; }
 
     @media (max-width: 992px) {
         .col-custom { width: 33.33%; }
@@ -15,7 +13,6 @@
         .col-custom { width: 50%; }
     }
 
-    /* CARD */
     .buku-card {
         height: 100%;
         border-radius: 12px;
@@ -27,7 +24,6 @@
         transform: translateY(-5px);
     }
 
-    /* WRAPPER GAMBAR */
     .img-wrapper {
         height: 160px;
         display: flex;
@@ -39,17 +35,14 @@
         max-height: 140px;
         max-width: 100%;
         object-fit: contain;
-        border-radius: 0; /
     }
 
-    /* BUTTON */
     .btn-action {
         width: 60px;
         height: 28px;
         font-size: 11px;
         padding: 0;
         border-radius: 4px;
-
         display: flex;
         align-items: center;
         justify-content: center;
@@ -61,24 +54,17 @@
         gap: 6px;
         margin-top: auto;
     }
-
-    .btn-wrapper form {
-        width: 60px;
-        height: 28px;
-        margin: 0;
-    }
-
-    .btn-wrapper form button {
-        width: 100%;
-        height: 100%;
-    }
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
 
     <form method="GET" action="{{ route('petugas.buku.index') }}" style="width:280px;">
-        <input type="text" name="keyword" class="form-control" placeholder="Search...">
+        <input type="text"
+               name="keyword"
+               class="form-control"
+               placeholder="Search..."
+               value="{{ request('keyword') }}">
     </form>
 
     <a href="{{ route('petugas.buku.create') }}" class="btn btn-primary btn-sm">
@@ -96,26 +82,21 @@
     <div class="col-custom d-flex">
         <div class="card shadow-sm border-0 text-center p-3 buku-card w-100">
 
-            <!-- Gambar -->
             <div class="img-wrapper">
                 <img src="{{ $item->gambar_url }}" class="buku-img">
             </div>
 
-            <!-- Judul -->
             <small class="mt-2 fw-semibold d-block" style="min-height:40px;">
                 {{ $item->judul }}
             </small>
 
-            <!-- Tombol -->
             <div class="btn-wrapper">
 
-                <!-- DETAIL -->
                 <a href="{{ route('petugas.buku.show', $item->id) }}"
                    class="btn btn-info btn-sm btn-action text-white">
                     Detail
                 </a>
 
-                <!-- DELETE -->
                 <form action="{{ route('petugas.buku.destroy', $item->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
@@ -126,7 +107,6 @@
                     </button>
                 </form>
 
-                <!-- EDIT -->
                 <a href="{{ route('petugas.buku.edit', $item->id) }}"
                    class="btn btn-warning btn-sm btn-action text-white">
                     Edit
@@ -137,9 +117,28 @@
         </div>
     </div>
 @empty
-    <p class="text-center">Data buku tidak ada</p>
+    <div class="col-12 text-center">
+        <p>Data buku tidak ada</p>
+    </div>
 @endforelse
 
+</div>
+
+<!-- TOMBOL -->
+<div class="d-flex justify-content-end mt-4">
+    @if(!$showAll)
+        <a href="{{ route('petugas.buku.index', [
+            'show_all' => 1,
+            'keyword' => request('keyword')
+        ]) }}" class="btn btn-outline-primary">
+            Lihat Semua
+        </a>
+    @else
+        <a href="{{ route('petugas.buku.index') }}"
+           class="btn btn-outline-secondary">
+            Tampilkan Sedikit
+        </a>
+    @endif
 </div>
 
 @endsection

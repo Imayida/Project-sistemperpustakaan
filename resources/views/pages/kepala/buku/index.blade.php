@@ -3,9 +3,7 @@
 @section('content')
 
 <style>
-    .col-custom {
-        width: 20%;
-    }
+    .col-custom { width: 20%; }
 
     @media (max-width: 992px) {
         .col-custom { width: 33.33%; }
@@ -46,7 +44,6 @@
         margin-top: 8px;
     }
 
-    /* BUTTON */
     .btn-detail {
         padding: 6px 18px;
         font-size: 14px;
@@ -55,14 +52,29 @@
     }
 </style>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
+<!-- SEARCH -->
+<div class="mb-3 text-center">
+    <form method="GET" action="{{ route('kepala.buku.index') }}"
+          class="mx-auto" style="width:280px;">
+        <input type="text"
+               name="keyword"
+               class="form-control"
+               placeholder="Search judul..."
+               value="{{ request('keyword') }}"
+               style="border-radius:10px;">
+    </form>
 </div>
 
-<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
-    Selamat datang di halaman koleksi buku
-</p>
+<!-- JUDUL -->
+<div class="mb-4">
+    <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
 
+    <p style="color:#6b7280; font-size:14px; margin-top:-5px;">
+        Selamat datang di halaman koleksi buku
+    </p>
+</div>
+
+<!-- DATA -->
 <div class="row g-4">
 
 @forelse($buku as $item)
@@ -80,18 +92,38 @@
                 {{ $item->judul }}
             </div>
 
-            <!--DETAIL -->
             <a href="{{ route('kepala.buku.detail', $item->id) }}"
-                class="btn btn-primary w-100 btn-detail">
+               class="btn btn-primary w-100 btn-detail">
                 Detail
             </a>
 
         </div>
     </div>
 @empty
-    <p class="text-center">Data buku tidak ada</p>
+    <div class="col-12 text-center">
+        <p>Data buku tidak ditemukan</p>
+    </div>
 @endforelse
 
 </div>
 
-@endsection
+<!-- TOMBOL -->
+<div class="d-flex justify-content-end mt-4">
+
+    @if(!$showAll)
+        <a href="{{ route('kepala.buku.index', [
+            'show_all' => 1,
+            'keyword' => request('keyword')
+        ]) }}" class="btn btn-outline-primary">
+            Lihat Semua
+        </a>
+    @else
+        <a href="{{ route('kepala.buku.index') }}"
+           class="btn btn-outline-secondary">
+            Tampilkan Sedikit
+        </a>
+    @endif
+
+</div>
+
+@endsection 

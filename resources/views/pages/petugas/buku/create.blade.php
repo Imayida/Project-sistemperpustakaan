@@ -56,7 +56,7 @@
             <!-- Button -->
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">Simpan</button>
-                <a href="{{ route('petugas.buku.index') }}" class="btn btn-light">Cancel</a>
+                <a href="{{ route('petugas.buku.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
 
         </form>
