@@ -12,10 +12,18 @@
     <div class="col-md-3">
         <input type="date" name="to" value="{{ $to }}" class="form-control">
     </div>
-    <div class="col-md-3">
-        <button class="btn btn-primary">Filter</button>
-        <a href="{{ route('kepala.laporan') }}" class="btn btn-secondary">Reset</a>
-    </div>
+    <div class="col-md-3 text-end">
+    <button class="btn btn-primary">Filter</button>
+
+    <a href="{{ route('kepala.laporan') }}" class="btn btn-secondary">
+        Reset
+    </a>
+
+    <a href="{{ route('kepala.laporan.pdf', ['from' => $from, 'to' => $to]) }}"
+       class="btn btn-danger">
+        Export PDF
+    </a>
+</div>
 </form>
 
 <!-- ================= PEMINJAMAN ================= -->

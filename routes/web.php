@@ -134,6 +134,7 @@ Route::middleware(['auth', 'role:kepala'])->prefix('kepala')->group(function () 
     Route::get('/buku/{id}', [KepalaBukuController::class, 'detail'])->name('kepala.buku.detail');
 
 Route::get('/laporan', [LaporanController::class, 'index'])->name('kepala.laporan');
+
+Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])
+    ->name('kepala.laporan.pdf');
 });
-
-
