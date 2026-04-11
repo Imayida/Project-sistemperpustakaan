@@ -39,7 +39,7 @@ class PinjamBukuController extends Controller
 
         // 🔹 simpan peminjaman (pakai user login)
         PinjamBuku::create([
-            'user_id' => Auth::id(), // ✅ penting
+            'user_id' => Auth::id(), //penting
             'nama' => Auth::user()->name, // auto ambil nama user
             'judul' => $request->judul,
             'tanggal_pinjam' => $request->tanggal_pinjam,

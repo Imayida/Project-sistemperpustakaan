@@ -3,6 +3,9 @@
 @section('content')
 
 <h4 class="fw-bold mb-3" style="color:#60a5fa;">Laporan Peminjaman & Pengembalian</h4>
+<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+    Selamat datang di halaman laporan peminjaman & pengembalian
+</p>
 
 <!-- FILTER -->
 <form method="GET" class="row g-2 mb-4">

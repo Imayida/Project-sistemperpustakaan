@@ -11,16 +11,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Total anggota
+        // TOTAL ANGGOTA
         $totalAnggota = User::where('role', 'anggota')->count();
 
-        // Total buku
+        // TOTAL BUKU
         $totalBuku = Buku::count();
 
-        // Total peminjaman
+        // TOTAL PEMINJAMAN
         $totalPeminjaman = PinjamBuku::count();
 
-        // Total dikembalikan
+        // TOTAL DIKEMBALIKAN
         $totalDikembalikan = PinjamBuku::where('status', 'dikembalikan')->count();
 
         return view('pages.kepala.dashboard.index', compact(

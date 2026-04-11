@@ -20,7 +20,7 @@ class BukuController extends Controller
             $query->where('judul', 'like', "%{$keyword}%");
         }
 
-        // LIMIT 5 kalau belum klik "lihat semua"
+        //  5 kalau belum klik "lihat semua"
         if (!$showAll) {
             $query->limit(5);
         }

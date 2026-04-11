@@ -17,38 +17,48 @@
 
     .buku-card {
         height: 100%;
-        max-width: 180px;
-        margin: auto;
         border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        background: #fff;
+        transition: 0.3s;
+    }
+
+    .buku-card:hover {
+        transform: translateY(-3px);
     }
 
     .img-wrapper {
-        height: 150px;
+        height: 160px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
     .buku-img {
-        max-height: 100%;
+        max-height: 140px;
         max-width: 100%;
         object-fit: contain;
     }
 
-    .btn-toggle {
-        border-radius: 20px;
-        padding: 6px 20px;
+    .judul-buku {
+        font-size: 13px;
+        font-weight: 600;
+        min-height: 40px;
+        margin-top: 8px;
+    }
+
+    .btn-detail {
+        padding: 6px 18px;
+        font-size: 14px;
+        border-radius: 7px;
+        margin-top: 10px;
     }
 </style>
 
-<!-- HEADER -->
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- HEADER (TIDAK DIUBAH) -->
+<div class="d-flex justify-content-between align-items-center mb-2">
     <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
 
-    <!-- SEARCH -->
+    <!-- SEARCH (TIDAK DIUBAH) -->
     <form method="GET" action="{{ route('buku.index') }}"
           class="mx-auto search-box">
         <input type="text"
@@ -60,16 +70,16 @@
     </form>
 </div>
 
-<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+<p style="color:#6b7280; font-size:14px; margin-top:-5px;">
     Selamat datang di halaman koleksi buku
 </p>
 
-<!-- DATA -->
+<!-- DATA (SUDAH DIPERBAIKI) -->
 <div class="row g-4">
 
 @forelse($buku as $b)
-    <div class="col-custom">
-        <div class="card shadow-sm border-0 text-center p-3 buku-card">
+    <div class="col-custom d-flex">
+        <div class="card border-0 text-center p-3 buku-card w-100">
 
             <!-- GAMBAR -->
             <div class="img-wrapper">
@@ -78,20 +88,20 @@
             </div>
 
             <!-- JUDUL -->
-            <h6 class="mb-2" style="font-size:14px; font-weight:500;">
+            <div class="judul-buku">
                 {{ $b->judul }}
-            </h6>
+            </div>
 
             <!-- BUTTON -->
             <a href="{{ route('buku.detail', $b->id) }}"
-               class="btn btn-primary btn-sm">
+               class="btn btn-primary w-100 btn-detail">
                 Detail
             </a>
 
         </div>
     </div>
 @empty
-    <div class="text-center">
+    <div class="col-12 text-center">
         <p>Tidak ada buku tersedia</p>
     </div>
 @endforelse

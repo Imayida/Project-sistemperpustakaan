@@ -56,21 +56,13 @@ Route::middleware(['auth', 'role:anggota'])->prefix('anggota')->group(function (
     Route::get('/peminjaman', [PinjamBukuController::class, 'index'])->name('peminjaman.index');
 
     // Pengembalian
-   Route::get('/pengembalian', [PengembalianController::class, 'index'])
-    ->name('pengembalian.index');
-
-Route::get('/pengembalian/create', [PengembalianController::class, 'create'])
-    ->name('pengembalian.create');
-
-Route::post('/pengembalian', [PengembalianController::class, 'store'])
-    ->name('pengembalian.store');
-
-Route::delete('/pengembalian/{id}', [PengembalianController::class, 'destroy'])
-    ->name('pengembalian.delete');
+   Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+   Route::get('/pengembalian/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
+   Route::post('/pengembalian', [PengembalianController::class, 'store'])->name('pengembalian.store');
+   Route::delete('/pengembalian/{id}', [PengembalianController::class, 'destroy'])->name('pengembalian.delete');
 });
 
-Route::get('/anggota/pengembalian/create', [App\Http\Controllers\Anggota\PengembalianController::class, 'create'])
-    ->name('pengembalian.create.simple');
+Route::get('/anggota/pengembalian/create', [App\Http\Controllers\Anggota\PengembalianController::class, 'create'])->name('pengembalian.create.simple');
 
 /*
 |--------------------------------------------------------------------------

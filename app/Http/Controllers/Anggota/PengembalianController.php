@@ -47,7 +47,7 @@ class PengembalianController extends Controller
             $denda = ceil($selisih) * 1000;
         }
 
-        // ✅ simpan pengembalian (status pending)
+        // simpan pengembalian (status pending)
         Pengembalian::create([
             'pinjam_buku_id' => $pinjam->id,
             'nama' => Auth::user()->name,

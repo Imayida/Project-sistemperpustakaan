@@ -12,16 +12,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // 📊 total anggota
+        // TOTAL ANGGOTA
         $totalAnggota = User::where('role', 'anggota')->count();
 
-        // 📚 total buku
+        // TOTAL BUKU
         $totalBuku = Buku::count();
 
-        // 💰 total denda (sementara)
+        // TOTAL DENDA
         $totalDenda = Pengembalian::sum('denda');
 
-        // 🔥 AMBIL DATA PEMINJAMAN PETUGAS (BUKAN ANGGOTA)
+        // AMBIL DATA PEMINJAMAN PETUGAS (BUKAN ANGGOTA)
         $peminjaman = PinjamBuku::latest()->take(5)->get();
 
         return view('pages.petugas.dashboard.index', compact(

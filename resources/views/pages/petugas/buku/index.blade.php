@@ -21,7 +21,7 @@
     }
 
     .buku-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
     }
 
     .img-wrapper {
@@ -37,26 +37,29 @@
         object-fit: contain;
     }
 
-    .btn-action {
-        width: 60px;
-        height: 28px;
-        font-size: 11px;
-        padding: 0;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .judul-buku {
+        font-size: 13px;
+        font-weight: 600;
+        min-height: 40px;
+        margin-top: 8px;
     }
 
-    .btn-wrapper {
+    .btn-group-custom {
         display: flex;
-        justify-content: center;
-        gap: 6px;
-        margin-top: auto;
+        gap: 5px;
+        margin-top: 10px;
+    }
+
+    .btn-group-custom .btn {
+        flex: 1;
+        font-size: 12px;
+        padding: 5px;
+        border-radius: 6px;
     }
 </style>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- HEADER (TIDAK DIUBAH) -->
+<div class="d-flex justify-content-between align-items-center mb-2">
     <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
 
     <form method="GET" action="{{ route('petugas.buku.index') }}" style="width:280px;">
@@ -72,45 +75,49 @@
     </a>
 </div>
 
-<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+<p style="color:#6b7280; font-size:14px; margin-top:-5px;">
     Selamat datang di halaman koleksi buku
 </p>
 
+<!-- DATA BUKU (SUDAH DIPERBAIKI) -->
 <div class="row g-4">
 
 @forelse($buku as $item)
     <div class="col-custom d-flex">
-        <div class="card shadow-sm border-0 text-center p-3 buku-card w-100">
+        <div class="card border-0 text-center p-3 buku-card w-100">
 
+            <!-- GAMBAR -->
             <div class="img-wrapper">
                 <img src="{{ $item->gambar_url }}" class="buku-img">
             </div>
 
-            <small class="mt-2 fw-semibold d-block" style="min-height:40px;">
+            <!-- JUDUL -->
+            <div class="judul-buku">
                 {{ $item->judul }}
-            </small>
+            </div>
 
-            <div class="btn-wrapper">
+            <!-- BUTTON -->
+            <div class="btn-group-custom">
 
                 <a href="{{ route('petugas.buku.show', $item->id) }}"
-                   class="btn btn-info btn-sm btn-action text-white">
+                   class="btn btn-info text-white">
                     Detail
+                </a>
+
+                <a href="{{ route('petugas.buku.edit', $item->id) }}"
+                   class="btn btn-warning text-white">
+                    Edit
                 </a>
 
                 <form action="{{ route('petugas.buku.destroy', $item->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
-                        class="btn btn-danger btn-sm btn-action"
+                        class="btn btn-danger"
                         onclick="return confirm('Yakin hapus buku?')">
                         Delete
                     </button>
                 </form>
-
-                <a href="{{ route('petugas.buku.edit', $item->id) }}"
-                   class="btn btn-warning btn-sm btn-action text-white">
-                    Edit
-                </a>
 
             </div>
 

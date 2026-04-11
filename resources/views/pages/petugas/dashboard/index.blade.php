@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
     <h4 class="fw-bold" style="color:#60a5fa;">Dashboard Petugas</h4>
 
     <div class="mx-auto" style="width:280px;">
@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<p style="color:#6b7280; font-size:14px; margin-top:-10px;">
+<p style="color:#6b7280; font-size:14px; margin-top:-5px;">
     Selamat datang di halaman dashboard petugas
 </p>
 

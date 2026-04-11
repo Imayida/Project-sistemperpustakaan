@@ -24,7 +24,7 @@ class BukuController extends Controller
             });
         }
 
-        // DEFAULT 5 DATA
+        // 5 DATA
         if (!$showAll) {
             $query->limit(5);
         }

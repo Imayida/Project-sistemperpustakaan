@@ -4,75 +4,93 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Petugas\Pengembalian;
+use App\Models\Petugas\Buku;
 
 class PengembalianController extends Controller
 {
     public function index()
     {
-        $data = Pengembalian::with(['user','buku'])
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $data = Pengembalian::with(['user','buku','peminjaman'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('pages.petugas.pengembalian.index', compact('data'));
     }
+
+    // SETUJUI (SUDAH TAMBAH STOK)
     public function setujui($id)
-{
-    $data = Pengembalian::with('peminjaman')->findOrFail($id);
+    {
+        $data = Pengembalian::with('peminjaman')->findOrFail($id);
 
-    // pengembalian
-    $data->update([
-        'status' => 'dikembalikan'
-    ]);
+        // biar tidak double klik
+        if ($data->status != 'dikembalikan') {
 
-    // peminjaman
-    if ($data->peminjaman) {
-        $data->peminjaman->update([
-            'status' => 'dikembalikan'
-        ]);
+            // UPDATE PENGEMBALIAN
+            $data->update([
+                'status' => 'dikembalikan'
+            ]);
+
+            // UPDATE PEMINJAMAN
+            if ($data->peminjaman) {
+
+                $data->peminjaman->update([
+                    'status' => 'dikembalikan'
+                ]);
+
+                // TAMBAH STOK
+                $buku = Buku::where('judul', $data->peminjaman->judul)->first();
+
+                if ($buku) {
+                    $buku->increment('stok');
+                }
+            }
+        }
+
+        return back()->with('success', 'Pengembalian disetujui & stok bertambah');
     }
 
-    return back()->with('success', 'Pengembalian disetujui');
-}
+    // TOLAK
+    public function tolak($id)
+    {
+        $data = Pengembalian::with('peminjaman')->findOrFail($id);
 
-public function tolak($id)
-{
-    $data = Pengembalian::with('peminjaman')->findOrFail($id);
-
-    $data->update([
-        'status' => 'ditolak'
-    ]);
-
-    if ($data->peminjaman) {
-        $data->peminjaman->update([
-            'status' => 'dipinjam'
+        $data->update([
+            'status' => 'ditolak'
         ]);
+
+        if ($data->peminjaman) {
+            $data->peminjaman->update([
+                'status' => 'dipinjam'
+            ]);
+        }
+
+        return back()->with('success', 'Pengembalian ditolak');
     }
 
-    return back()->with('success', 'Pengembalian ditolak');
-}
-public function selesai($id)
-{
-    $data = Pengembalian::with('peminjaman')->findOrFail($id);
+    // SELESAI
+    public function selesai($id)
+    {
+        $data = Pengembalian::with('peminjaman')->findOrFail($id);
 
-    $data->update([
-        'status' => 'selesai'
-    ]);
-
-    if ($data->peminjaman) {
-        $data->peminjaman->update([
+        $data->update([
             'status' => 'selesai'
         ]);
+
+        if ($data->peminjaman) {
+            $data->peminjaman->update([
+                'status' => 'selesai'
+            ]);
+        }
+
+        return back()->with('success', 'Pengembalian selesai');
     }
 
-    return back()->with('success', 'Pengembalian selesai');
-}
-public function destroy($id)
-{
-    $data = \App\Models\Petugas\Pengembalian::findOrFail($id);
-    $data->delete();
+    // DELETE
+    public function destroy($id)
+    {
+        $data = Pengembalian::findOrFail($id);
+        $data->delete();
 
-    return back()->with('success', 'Data berhasil dihapus');
+        return back()->with('success', 'Data berhasil dihapus');
+    }
 }
-}
-
-

@@ -52,27 +52,33 @@
     }
 </style>
 
-<!-- SEARCH -->
-<div class="mb-3 text-center">
-    <form method="GET" action="{{ route('kepala.buku.index') }}"
-          class="mx-auto" style="width:280px;">
-        <input type="text"
-               name="keyword"
-               class="form-control"
-               placeholder="Search judul..."
-               value="{{ request('keyword') }}"
-               style="border-radius:10px;">
-    </form>
+<!-- HEADER + SEARCH -->
+<div class="d-flex align-items-center mb-2">
+
+    <!-- KIRI -->
+    <div>
+        <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
+    </div>
+
+    <!-- TENGAH -->
+    <div class="mx-auto" style="width:280px;">
+        <form method="GET" action="{{ route('kepala.buku.index') }}">
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Search..."
+                   value="{{ request('keyword') }}">
+        </form>
+    </div>
+
+    <!-- KANAN (kosong biar balance) -->
+    <div style="width:120px;"></div>
+
 </div>
 
-<!-- JUDUL -->
-<div class="mb-4">
-    <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
-
-    <p style="color:#6b7280; font-size:14px; margin-top:-5px;">
-        Selamat datang di halaman koleksi buku
-    </p>
-</div>
+<p style="color:#6b7280; font-size:14px; margin-top:-5px;">
+    Selamat datang di halaman koleksi buku
+</p>
 
 <!-- DATA -->
 <div class="row g-4">
@@ -126,4 +132,4 @@
 
 </div>
 
-@endsection 
+@endsection
