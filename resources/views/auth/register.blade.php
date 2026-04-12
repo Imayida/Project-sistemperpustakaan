@@ -13,6 +13,10 @@
 
 body{
     background:#eef1f5;
+    background-image: url('{{ asset("storage/buku3.jpg") }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .register-container{

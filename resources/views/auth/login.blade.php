@@ -13,6 +13,10 @@
 
 body{
     background:#eef1f5;
+    background-image: url('storage/buku3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .login-container{
@@ -66,7 +70,6 @@ body{
                             placeholder="Masukan Password"
                             required
                         >
-
 
                     </div>
 
