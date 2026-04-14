@@ -10,14 +10,15 @@
              height="70"
              style="object-fit: cover;">
         <br>
-        <span class="badge-role">{{ auth()->user()->role ?? 'Anggota' }}</span>
+        <span class="badge-role">{{ auth()->user()->name ?? 'Guest' }}</span>
     </div>
 
     <!-- Dashboard -->
-<a href="{{ route('dashboard') }}"
-   class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-    <i class="bi bi-grid"></i> Dashboard
-</a>
+    <a href="{{ route('dashboard') }}"
+       class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <i class="bi bi-grid"></i> Dashboard
+    </a>
+
     <!-- Buku -->
     <a href="{{ route('buku.index') }}"
        class="menu-item {{ request()->routeIs('buku.*') ? 'active' : '' }}">

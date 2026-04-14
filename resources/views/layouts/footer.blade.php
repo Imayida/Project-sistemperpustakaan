@@ -1,4 +1,3 @@
-<div class="footer">
-    Design and Developed by <a href="#">wrappixel.com</a>.
-    Distributed by <a href="#">ThemeWagon</a>
+<div class="footer" style="color: #60a5fa;">
+    © 2026 Sistem Perpustakaan
 </div>

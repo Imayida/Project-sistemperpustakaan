@@ -17,7 +17,7 @@ return new class extends Migration
         $table->string('judul');
         $table->date('tanggal_pinjam');
         $table->date('tanggal_jatuh_tempo');
-        
+
         $table->timestamps();
     });
 }

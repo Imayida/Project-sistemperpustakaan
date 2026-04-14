@@ -4,6 +4,12 @@
 
 <h4 class="fw-bold" style="color:#60a5fa;">Form Pengembalian</h4>
 
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body">
 
@@ -16,7 +22,7 @@
                 <input type="text" id="nama" class="form-control" readonly>
             </div>
 
-            <!-- PILIH PEMINJAMAN (dipindah ke bawah nama) -->
+            <!-- Pilih Peminjaman -->
             <div class="mb-3">
                 <label>Judul Buku</label>
                 <select id="pinjamSelect" name="pinjam_buku_id" class="form-control">
@@ -42,7 +48,11 @@
             <!-- Tanggal Kembali -->
             <div class="mb-3">
                 <label class="form-label small text-muted">Tanggal Kembali</label>
-                <input type="date" id="tanggal_kembali" name="tanggal_kembali" class="form-control">
+                <input type="date"
+                       id="tanggal_kembali"
+                       name="tanggal_kembali"
+                       class="form-control"
+                       required>
             </div>
 
             <!-- Jatuh Tempo -->
@@ -90,22 +100,31 @@ document.addEventListener('DOMContentLoaded', function(){
         tanggalPinjam.value = selected.dataset.tanggal;
         tempo.value = selected.dataset.tempo;
 
-        denda.value = 0;
+        // 🔥 set minimal tanggal kembali = tanggal pinjam
+        kembali.min = selected.dataset.tanggal;
+
         kembali.value = "";
+        denda.value = 0;
     }
 
-    // pertama load
     isiData();
-
-    // saat pilih berubah
     select.addEventListener('change', isiData);
 
-    // hitung denda
     kembali.addEventListener('change', function(){
 
         let tglKembali = new Date(this.value);
+        let tglPinjam = new Date(tanggalPinjam.value);
         let tglTempo = new Date(tempo.value);
 
+        // ❌ validasi tidak boleh sebelum pinjam
+        if (tglKembali < tglPinjam) {
+            alert('Tanggal kembali tidak boleh sebelum tanggal pinjam!');
+            this.value = "";
+            denda.value = 0;
+            return;
+        }
+
+        // 💰 hitung denda
         if (tglKembali > tglTempo) {
             let selisih = Math.ceil((tglKembali - tglTempo) / (1000*60*60*24));
             denda.value = selisih * 1000;

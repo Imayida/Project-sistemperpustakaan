@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Anggota\PinjamBuku;
 use App\Models\Petugas\Buku;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
@@ -133,18 +134,34 @@ class BukuController extends Controller
         return redirect()->route('petugas.buku.index')
             ->with('success', 'Buku berhasil diupdate');
     }
+public function destroy($id)
+{
+    $buku = Buku::findOrFail($id);
 
-    public function destroy($id)
-    {
-        $buku = Buku::findOrFail($id);
+    // ❌ cek yang benar-benar sedang dipinjam (bukan semua)
+    $masihDipinjam = PinjamBuku::where('judul', $buku->judul)
+        ->where('status', 'dipinjam') // hanya yang disetujui
+        ->exists();
 
-        if ($buku->gambar) {
-            Storage::disk('public')->delete($buku->gambar);
-        }
-
-        $buku->delete();
-
+    if ($masihDipinjam) {
         return redirect()->route('petugas.buku.index')
-            ->with('success', 'Buku berhasil dihapus');
+            ->with('error', 'Buku sedang dipinjam, tidak bisa dihapus!');
     }
+
+    // 🧹 hapus yang masih pending
+    PinjamBuku::where('judul', $buku->judul)
+        ->where('status', 'menunggu') // pending
+        ->delete();
+
+    // 🖼️ hapus gambar
+    if ($buku->gambar) {
+        Storage::disk('public')->delete($buku->gambar);
+    }
+
+    // 🗑️ hapus buku
+    $buku->delete();
+
+    return redirect()->route('petugas.buku.index')
+        ->with('success', 'Buku berhasil dihapus');
+}
 }

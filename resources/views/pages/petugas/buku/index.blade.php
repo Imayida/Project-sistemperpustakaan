@@ -58,7 +58,7 @@
     }
 </style>
 
-<!-- HEADER (TIDAK DIUBAH) -->
+<!-- HEADER -->
 <div class="d-flex justify-content-between align-items-center mb-2">
     <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
 
@@ -79,7 +79,22 @@
     Selamat datang di halaman koleksi buku
 </p>
 
-<!-- DATA BUKU (SUDAH DIPERBAIKI) -->
+<!-- ALERT -->
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+
+<!-- DATA BUKU -->
 <div class="row g-4">
 
 @forelse($buku as $item)
@@ -109,12 +124,27 @@
                     Edit
                 </a>
 
+                @php
+    $sedangDipinjam = \App\Models\Petugas\PinjamBuku::where('judul', $item->judul)
+                        ->where('status', 'dipinjam')
+                        ->exists();
+@endphp
+
+                <!-- DELETE BUTTON -->
                 <form action="{{ route('petugas.buku.destroy', $item->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
+
                     <button type="submit"
                         class="btn btn-danger"
-                        onclick="return confirm('Yakin hapus buku?')">
+                        onclick="
+                            @if($sedangDipinjam)
+                                alert('Buku sedang dipinjam, tidak bisa dihapus!');
+                                return false;
+                            @else
+                                return confirm('Yakin hapus buku?');
+                            @endif
+                        ">
                         Delete
                     </button>
                 </form>

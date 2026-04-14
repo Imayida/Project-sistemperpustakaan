@@ -64,6 +64,9 @@ Route::middleware(['auth', 'role:anggota'])->prefix('anggota')->group(function (
 
 Route::get('/anggota/pengembalian/create', [App\Http\Controllers\Anggota\PengembalianController::class, 'create'])->name('pengembalian.create.simple');
 
+Route::get('/pengembalian/{id}/struk', [PengembalianController::class, 'struk'])
+    ->name('pengembalian.struk');
+
 /*
 |--------------------------------------------------------------------------
 | PETUGAS
@@ -108,6 +111,9 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->group(function (
 
     Route::delete('/pengembalian/{id}', [PetugasPengembalianController::class, 'destroy'])
         ->name('petugas.pengembalian.delete');
+
+    Route::get('/pengembalian/struk/{id}', [PetugasPengembalianController::class, 'struk'])
+        ->name('petugas.pengembalian.struk');
 });
 
 
