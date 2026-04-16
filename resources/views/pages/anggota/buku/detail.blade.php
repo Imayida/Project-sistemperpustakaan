@@ -30,10 +30,21 @@
                 {{ $buku->deskripsi }}
             </p>
 
+            <!-- Buton Pinjam Buku -->
             <div class="mt-3">
-                <a href="{{ route('pinjambuku.create', $buku->id) }}" class="btn btn-primary">
-                    Pinjam Buku
-                </a>
+                <form action="{{ route('pinjambuku.store') }}" method="POST" class="d-inline">
+                    @csrf
+                    <input type="hidden" name="judul" value="{{ $buku->judul }}">
+                    <input type="hidden" name="tanggal_pinjam" value="{{ date('Y-m-d') }}">
+                    <input type="hidden" name="tanggal_jatuh_tempo" value="{{ date('Y-m-d', strtotime('+7 days')) }}">
+                    <button type="submit" class="btn btn-primary">
+                        Pinjam Buku
+                    </button>
+                </form>
+
+               
+
+                <!-- Buton Kembali -->
                 <a href="{{ route('buku.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
 

@@ -60,7 +60,7 @@
         <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
     </div>
 
-    <!-- TENGAH -->
+    <!-- SEARCH TENGAH -->
     <div class="mx-auto" style="width:280px;">
         <form method="GET" action="{{ route('kepala.buku.index') }}">
             <input type="text"
@@ -80,7 +80,7 @@
     Selamat datang di halaman koleksi buku
 </p>
 
-<!-- DATA -->
+<!-- DATA BUKU -->
 <div class="row g-4">
 
 @forelse($buku as $item)
@@ -113,7 +113,7 @@
 
 </div>
 
-<!-- TOMBOL -->
+<!-- TOMBOL LIHAT SEMUA DAN TAMPILKAN SEDIKIT -->
 <div class="d-flex justify-content-end mt-4">
 
     @if(!$showAll)

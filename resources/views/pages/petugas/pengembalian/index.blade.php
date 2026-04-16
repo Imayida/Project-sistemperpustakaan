@@ -8,6 +8,7 @@
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h4 class="fw-bold" style="color:#60a5fa;">Data Pengembalian</h4>
 
+        <!-- serch -->
         <div class="mx-auto" style="width:280px;">
             <input type="text"
                    id="search"
@@ -21,7 +22,7 @@
         Selamat datang di halaman data pengembalian
     </p>
 
-    <!-- Card -->
+    <!-- Card data pengembalian -->
     <div class="card shadow-sm border-0 rounded-4 p-3">
 
         <div class="table-responsive">
@@ -46,12 +47,37 @@
 
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->judul }}</td>
-                        <td>{{ $item->tanggal_pinjam }}</td>
-                        <td>{{ $item->tanggal_kembali }}</td>
-                        <td>{{ $item->tanggal_jatuh_tempo }}</td>
+
+                        <!-- FORMAT TANGGAL  -->
+                        <td>
+                            {{ $item->tanggal_pinjam
+                                ? \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d-m-Y')
+                                : '-' }}
+                        </td>
 
                         <td>
-                            {{ number_format($item->denda ?? 0, 0, ',', '.') }}
+                            {{ $item->tanggal_kembali
+                                ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d-m-Y')
+                                : '-' }}
+                        </td>
+
+                        <td>
+                            {{ $item->tanggal_jatuh_tempo
+                                ? \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d-m-Y')
+                                : '-' }}
+                        </td>
+
+                        <!-- DENDA -->
+                        <td>
+                            @if(($item->denda ?? 0) > 0)
+                                <span class="text-danger fw-bold">
+                                    Rp {{ number_format($item->denda, 0, ',', '.') }}
+                                </span>
+                            @else
+                                <span class="text-muted">
+                                    Rp 0
+                                </span>
+                            @endif
                         </td>
 
                         <!-- STATUS -->
@@ -110,7 +136,7 @@
                     @empty
                     <tr>
                         <td colspan="8" class="text-center text-muted">
-                            Belum ada data
+                            Belum Ada Data Pengembalian
                         </td>
                     </tr>
                     @endforelse

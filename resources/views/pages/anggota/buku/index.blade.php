@@ -54,11 +54,11 @@
     }
 </style>
 
-<!-- HEADER (TIDAK DIUBAH) -->
+<!-- HEADER  -->
 <div class="d-flex justify-content-between align-items-center mb-2">
     <h4 class="fw-bold" style="color:#60a5fa;">Koleksi Buku</h4>
 
-    <!-- SEARCH (TIDAK DIUBAH) -->
+    <!-- SEARCH  -->
     <form method="GET" action="{{ route('buku.index') }}"
           class="mx-auto search-box">
         <input type="text"
@@ -74,7 +74,7 @@
     Selamat datang di halaman koleksi buku
 </p>
 
-<!-- DATA (SUDAH DIPERBAIKI) -->
+<!-- DATA BUKU -->
 <div class="row g-4">
 
 @forelse($buku as $b)
@@ -108,7 +108,7 @@
 
 </div>
 
-<!-- TOMBOL -->
+<!-- TOMBOL LIHAT SEMUA & TAMPILKAN SEDIKIT -->
 <div class="d-flex justify-content-end mt-4">
     @if(!$showAll)
         <a href="{{ route('buku.index', [

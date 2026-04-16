@@ -23,7 +23,7 @@
         Selamat datang di halaman data peminjaman
     </p>
 
-    <!-- Card -->
+    <!-- Card data peminjaman-->
     <div class="card shadow-sm border-0 rounded-4 p-3">
 
         <div class="table-responsive">
@@ -76,6 +76,7 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-1 flex-wrap">
 
+                                     {{-- SETUJUI --}}
                                     @if($status == 'pending')
                                         <form action="{{ route('petugas.peminjaman.setujui', $item->id) }}" method="POST">
                                             @csrf
@@ -84,6 +85,7 @@
                                             </button>
                                         </form>
 
+                                        {{-- TOLAK --}}
                                         <form action="{{ route('petugas.peminjaman.tolak', $item->id) }}" method="POST">
                                             @csrf
                                             <button class="btn btn-danger btn-sm">
@@ -91,16 +93,19 @@
                                             </button>
                                         </form>
 
+                                    {{-- SUDAH DIPROSES --}}
                                     @elseif($status == 'dipinjam')
                                         <span class="text-primary" style="font-size:13px;">
                                             Sudah Diproses
                                         </span>
 
+                                    {{-- DITOLAK --}}
                                     @elseif($status == 'ditolak')
                                         <span class="text-danger" style="font-size:13px;">
                                             Ditolak
                                         </span>
 
+                                    {{-- SELESAI --}}
                                     @elseif($status == 'dikembalikan')
                                         <span class="badge bg-success">Selesai</span>
 
@@ -112,7 +117,7 @@
                     @empty
                         <tr>
                             <td colspan="6" class="text-center text-muted">
-                                Belum Ada Data
+                                Belum Ada Data Peminjaman
                             </td>
                         </tr>
                     @endforelse
@@ -120,7 +125,7 @@
             </table>
         </div>
 
-        <!-- TOMBOL KE KANAN -->
+        <!-- TOMBOL LIHAT SEMUA -->
         <div class="d-flex justify-content-end mt-3">
             <button id="toggleBtn" class="btn btn-outline-primary">
                 Lihat Semua
@@ -142,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let showAll = false;
 
-    // 🔥 tampil awal (4 data)
+    //  tampil awal (4 data)
     function tampilAwal() {
         rows.forEach((row, index) => {
             row.style.display = index < 4 ? '' : 'none';
@@ -151,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     tampilAwal();
 
-    // 🔁 toggle lihat semua
+    //  toggle lihat semua
     toggleBtn.addEventListener('click', function() {
         showAll = !showAll;
 
@@ -164,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 🔍 search realtime
+    //  search realtime
     search.addEventListener('keyup', function() {
         let keyword = this.value.toLowerCase();
 

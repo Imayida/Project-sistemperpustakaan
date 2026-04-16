@@ -68,6 +68,7 @@
 
 </div>
 
+<!-- Tabel Data Peminjaman -->
 <div class="card border-0 shadow-sm rounded-4 p-3">
     <div class="table-responsive">
         <table class="table align-middle">

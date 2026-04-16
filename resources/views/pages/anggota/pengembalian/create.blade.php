@@ -10,6 +10,7 @@
     </div>
 @endif
 
+<!-- Form pengembalian -->
 <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body">
 
@@ -67,10 +68,12 @@
                 <input type="number" id="denda" class="form-control" readonly>
             </div>
 
+             <!-- Button Mengembalikan -->
             <button type="submit" class="btn btn-primary btn-sm">
                 Mengembalikan
             </button>
 
+             <!-- Button kembali -->
             <a href="{{ route('pengembalian.index') }}" class="btn btn-secondary btn-sm">
                 Kembali
             </a>
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function(){
         tanggalPinjam.value = selected.dataset.tanggal;
         tempo.value = selected.dataset.tempo;
 
-        // 🔥 set minimal tanggal kembali = tanggal pinjam
+        // set minimal tanggal kembali = tanggal pinjam
         kembali.min = selected.dataset.tanggal;
 
         kembali.value = "";
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function(){
         let tglPinjam = new Date(tanggalPinjam.value);
         let tglTempo = new Date(tempo.value);
 
-        // ❌ validasi tidak boleh sebelum pinjam
+        //  validasi tidak boleh sebelum pinjam
         if (tglKembali < tglPinjam) {
             alert('Tanggal kembali tidak boleh sebelum tanggal pinjam!');
             this.value = "";
@@ -124,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function(){
             return;
         }
 
-        // 💰 hitung denda
+        // hitung denda
         if (tglKembali > tglTempo) {
             let selisih = Math.ceil((tglKembali - tglTempo) / (1000*60*60*24));
             denda.value = selisih * 1000;

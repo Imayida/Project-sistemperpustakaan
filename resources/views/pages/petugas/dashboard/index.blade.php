@@ -62,83 +62,88 @@
         </div>
     </div>
 
-
     <!-- TABLE DATA PEMINJAMAN -->
-<div class="card shadow-sm border-0 rounded-4 p-3">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="card shadow-sm border-0 rounded-4 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
 
-    </div>
+        </div>
 
-    <div class="table-responsive">
-        <table class="table align-middle">
+        <div class="table-responsive">
+            <table class="table align-middle">
 
-            <thead class="text-muted" style="font-size:13px;">
-                <tr>
-                    <th>NAMA</th>
-                    <th>JUDUL BUKU</th>
-                    <th>TANGGAL PINJAM</th>
-                    <th>TANGGAL JATUH TEMPO</th>
-                    <th>STATUS</th>
-                    <th class="text-center">AKSI</th>
-                </tr>
-            </thead>
+                <thead class="text-muted" style="font-size:13px;">
+                    <tr>
+                        <th>NAMA</th>
+                        <th>JUDUL BUKU</th>
+                        <th>TANGGAL PINJAM</th>
+                        <th>TANGGAL JATUH TEMPO</th>
+                        <th>STATUS</th>
+                        <th class="text-center">AKSI</th>
+                    </tr>
+                </thead>
 
-            <tbody id="tableBody" style="font-size:14px;">
+                <tbody id="tableBody" style="font-size:14px;">
 
-                @foreach($peminjaman as $item)
-                <tr>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ $item->judul }}</td>
-                    <td>{{ $item->tanggal_pinjam }}</td>
-                    <td>{{ $item->tanggal_jatuh_tempo }}</td>
+                    @forelse($peminjaman as $item)
+                    <tr>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ $item->judul }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
 
-                    <!-- STATUS -->
-                    <td>
-                        @php
-                            $today = \Carbon\Carbon::now();
-                            $jatuhTempo = \Carbon\Carbon::parse($item->tanggal_jatuh_tempo);
-                        @endphp
+                        <!-- STATUS -->
+                        <td>
+                            @php
+                                $today = \Carbon\Carbon::now();
+                                $jatuhTempo = \Carbon\Carbon::parse($item->tanggal_jatuh_tempo);
+                            @endphp
 
-                        @if($item->status == 'pending')
-                            <span class="badge bg-warning px-3 py-1">Pending</span>
+                            @if($item->status == 'pending')
+                                <span class="badge bg-warning px-3 py-1">Pending</span>
 
-                        @elseif($item->status == 'ditolak')
-                            <span class="badge bg-danger px-3 py-1">Ditolak</span>
+                            @elseif($item->status == 'ditolak')
+                                <span class="badge bg-danger px-3 py-1">Ditolak</span>
 
-                        @elseif($item->status == 'dikembalikan')
-                            <span class="badge bg-success px-3 py-1">Dikembalikan</span>
+                            @elseif($item->status == 'dikembalikan')
+                                <span class="badge bg-success px-3 py-1">Dikembalikan</span>
 
-                        @elseif($item->status == 'dipinjam')
+                            @elseif($item->status == 'dipinjam')
 
-                            @if($jatuhTempo < $today)
-                                <span class="badge bg-danger px-3 py-1">Terlambat</span>
+                                @if($jatuhTempo < $today)
+                                    <span class="badge bg-danger px-3 py-1">Terlambat</span>
+                                @else
+                                    <span class="badge bg-primary px-3 py-1">Dipinjam</span>
+                                @endif
+
                             @else
-                                <span class="badge bg-primary px-3 py-1">Dipinjam</span>
+                                <span class="badge bg-secondary px-3 py-1">-</span>
                             @endif
+                        </td>
 
-                        @else
-                             <span class="badge bg-secondary px-3 py-1">-</span>
-                        @endif
-                    </td>
+                        <!-- AKSI DELETE -->
+                        <td class="text-center">
+                            <form action="{{ route('petugas.peminjaman.destroy', $item->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            Belum ada data peminjaman
+                        </td>
+                    </tr>
+                    @endforelse
 
-                    <!-- AKSI DELETE -->
-                    <td class="text-center">
-                        <form action="{{ route('petugas.peminjaman.destroy', $item->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
+                </tbody>
 
-            </tbody>
-
-        </table>
+            </table>
+        </div>
     </div>
-</div>
 </div>
 @endsection
 
@@ -150,7 +155,7 @@ document.getElementById('search').addEventListener('keyup', function() {
     let rows = document.querySelectorAll('#tableBody tr');
 
     rows.forEach(function(row) {
-        let nama = row.children[0].textContent.toLowerCase(); // kolom NAMA
+        let nama = row.children[0].textContent.toLowerCase();
 
         if (nama.includes(keyword)) {
             row.style.display = '';

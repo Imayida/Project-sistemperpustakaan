@@ -18,6 +18,11 @@
         border-radius: 12px;
         background: #fff;
         transition: 0.3s;
+
+        /* BIAR SAMA KAYA KEPALA */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .buku-card:hover {
@@ -42,19 +47,38 @@
         font-weight: 600;
         min-height: 40px;
         margin-top: 8px;
+
+        /*  BIAR JUDUL RAPI */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
     .btn-group-custom {
         display: flex;
-        gap: 5px;
+        gap: 6px;
         margin-top: 10px;
+        justify-content: center;
     }
 
+    /* FIX FORM DELETE */
+    .btn-group-custom form {
+        margin: 0;
+    }
+
+    /*  UKURAN TOMBOL SAMA */
     .btn-group-custom .btn {
-        flex: 1;
-        font-size: 12px;
-        padding: 5px;
-        border-radius: 6px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        font-size: 14px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
     }
 </style>
 
@@ -114,14 +138,18 @@
             <!-- BUTTON -->
             <div class="btn-group-custom">
 
+                <!-- DETAIL -->
                 <a href="{{ route('petugas.buku.show', $item->id) }}"
-                   class="btn btn-info text-white">
-                    Detail
+                   class="btn btn-info text-white"
+                   title="Detail">
+                    <i class="bi bi-eye"></i>
                 </a>
 
+                <!-- EDIT -->
                 <a href="{{ route('petugas.buku.edit', $item->id) }}"
-                   class="btn btn-warning text-white">
-                    Edit
+                   class="btn btn-warning text-white"
+                   title="Edit">
+                    <i class="bi bi-pencil"></i>
                 </a>
 
                 @php
@@ -130,13 +158,14 @@
                         ->exists();
 @endphp
 
-                <!-- DELETE BUTTON -->
+                <!-- DELETE -->
                 <form action="{{ route('petugas.buku.destroy', $item->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
 
                     <button type="submit"
                         class="btn btn-danger"
+                        title="Delete"
                         onclick="
                             @if($sedangDipinjam)
                                 alert('Buku sedang dipinjam, tidak bisa dihapus!');
@@ -145,7 +174,7 @@
                                 return confirm('Yakin hapus buku?');
                             @endif
                         ">
-                        Delete
+                        <i class="bi bi-trash"></i>
                     </button>
                 </form>
 

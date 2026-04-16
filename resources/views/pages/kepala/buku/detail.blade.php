@@ -30,7 +30,7 @@
                 {{ $buku->deskripsi }}
             </p>
 
-            <!-- Tombol -->
+            <!-- Tombol Kembali -->
             <div class="mt-3">
                 <a href="{{ route('kepala.buku.index') }}" class="btn btn-secondary">
                     Kembali

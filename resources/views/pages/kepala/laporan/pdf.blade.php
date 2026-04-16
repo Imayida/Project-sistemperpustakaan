@@ -19,6 +19,7 @@
 <p>Periode: {{ $from }} s/d {{ $to }}</p>
 @endif
 
+<!-- ================= PEMINJAMAN ================= -->
 <h3>Data Peminjaman</h3>
 <table>
     <thead>
@@ -43,6 +44,7 @@
     </tbody>
 </table>
 
+<!-- ================= PENGEMBALIAN ================= -->
 <h3>Data Pengembalian</h3>
 <table>
     <thead>
@@ -64,10 +66,43 @@
             <td>{{ $item->tanggal_pinjam }}</td>
             <td>{{ $item->tanggal_kembali }}</td>
             <td>{{ $item->tanggal_jatuh_tempo }}</td>
-            <td>{{ $item->denda }}</td>
+            <td>Rp {{ number_format($item->denda ?? 0, 0, ',', '.') }}</td>
             <td>{{ $item->status }}</td>
         </tr>
         @endforeach
+    </tbody>
+</table>
+
+<!-- ================= DATA DENDA ================= -->
+<h3>Data Denda</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Nama</th>
+            <th>Judul</th>
+            <th>Tanggal Pinjam</th>
+            <th>Tanggal Kembali</th>
+            <th>Jatuh Tempo</th>
+            <th>Denda</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($dataDenda as $item)
+        <tr>
+            <td>{{ $item->nama }}</td>
+            <td>{{ $item->judul }}</td>
+            <td>{{ $item->tanggal_pinjam }}</td>
+            <td>{{ $item->tanggal_kembali }}</td>
+            <td>{{ $item->tanggal_jatuh_tempo }}</td>
+            <td><strong>Rp {{ number_format($item->denda, 0, ',', '.') }}</strong></td>
+            <td>{{ $item->status }}</td>
+        </tr>
+        @empty
+        <tr>
+            <td colspan="7" style="text-align:center;">Tidak ada data denda</td>
+        </tr>
+        @endforelse
     </tbody>
 </table>
 
