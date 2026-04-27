@@ -53,6 +53,7 @@
                        id="tanggal_kembali"
                        name="tanggal_kembali"
                        class="form-control"
+                       readonly
                        required>
             </div>
 
@@ -96,6 +97,22 @@ document.addEventListener('DOMContentLoaded', function(){
     let kembali = document.getElementById('tanggal_kembali');
     let denda = document.getElementById('denda');
 
+    // Set tanggal kembali otomatis ke hari ini
+    kembali.value = new Date().toISOString().split('T')[0];
+
+    function hitungDenda(){
+        let tglKembali = new Date(kembali.value);
+        let tglTempo = new Date(tempo.value);
+
+        // hitung denda
+        if (tglKembali > tglTempo) {
+            let selisih = Math.ceil((tglKembali - tglTempo) / (1000*60*60*24));
+            denda.value = selisih * 1000;
+        } else {
+            denda.value = 0;
+        }
+    }
+
     function isiData(){
         let selected = select.options[select.selectedIndex];
 
@@ -106,36 +123,12 @@ document.addEventListener('DOMContentLoaded', function(){
         // set minimal tanggal kembali = tanggal pinjam
         kembali.min = selected.dataset.tanggal;
 
-        kembali.value = "";
-        denda.value = 0;
+        kembali.value = new Date().toISOString().split('T')[0];
+        hitungDenda();
     }
 
     isiData();
     select.addEventListener('change', isiData);
-
-    kembali.addEventListener('change', function(){
-
-        let tglKembali = new Date(this.value);
-        let tglPinjam = new Date(tanggalPinjam.value);
-        let tglTempo = new Date(tempo.value);
-
-        //  validasi tidak boleh sebelum pinjam
-        if (tglKembali < tglPinjam) {
-            alert('Tanggal kembali tidak boleh sebelum tanggal pinjam!');
-            this.value = "";
-            denda.value = 0;
-            return;
-        }
-
-        // hitung denda
-        if (tglKembali > tglTempo) {
-            let selisih = Math.ceil((tglKembali - tglTempo) / (1000*60*60*24));
-            denda.value = selisih * 1000;
-        } else {
-            denda.value = 0;
-        }
-
-    });
 
 });
 </script>
